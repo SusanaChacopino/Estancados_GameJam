@@ -12,10 +12,12 @@ public class SCR_Chuches : MonoBehaviour
     public float minHorizontal;
     public float maxHorizontal;
     public float spawnAltura;
+    public float chuche1Percent;
+    public float frutaPercent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        InvokeRepeating("SpawnFruta", 0f, frecuencia);
     }
 
     // Update is called once per frame
@@ -27,5 +29,27 @@ public class SCR_Chuches : MonoBehaviour
     void SpawnFruta() 
     {
         float x = Random.Range(minHorizontal, maxHorizontal);
+        Vector3 pos = new Vector3(x, spawnAltura, 0);
+
+        float r = Random.value * 100f;
+
+        GameObject frutaElegida;
+
+        if (r < frutaPercent)
+        {
+            frutaElegida = fruta;
+        }
+
+        else if (frutaPercent < r && r < chuche1Percent)
+        {
+            frutaElegida = chuche1; 
+        }
+
+        else 
+        {
+            frutaElegida= chuche2;
+        }
+
+        Instantiate(frutaElegida,pos,Quaternion.identity);
     }
 }

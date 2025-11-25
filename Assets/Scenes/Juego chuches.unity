@@ -132,7 +132,7 @@ GameObject:
   m_Layer: 0
   m_Name: Spawner_Fruta
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -148,13 +148,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d24ca936226b14fbeb45cda7995ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chuche1: {fileID: 0}
-  chuche2: {fileID: 0}
-  fruta: {fileID: 0}
-  frecuencia: 0
+  chuche1: {fileID: 8281019848290985527, guid: 78102dfef0ae7df42a0e3b7acd6abff6, type: 3}
+  chuche2: {fileID: 5410193082490703801, guid: 041ba9fc34291f54380282e6b2b9dd16, type: 3}
+  fruta: {fileID: 8586575423423472466, guid: 3030c0ec6c9820b43b02430023e17469, type: 3}
+  frecuencia: 1
   minHorizontal: 0
-  maxHorizontal: 0
-  spawnAltura: 0
+  maxHorizontal: 10
+  spawnAltura: 1
+  chuche1Percent: 80
+  frutaPercent: 40
 --- !u!4 &134102951
 Transform:
   m_ObjectHideFlags: 0
@@ -164,7 +166,7 @@ Transform:
   m_GameObject: {fileID: 134102949}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -320,7 +322,7 @@ GameObject:
   - component: {fileID: 390332099}
   - component: {fileID: 390332100}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
