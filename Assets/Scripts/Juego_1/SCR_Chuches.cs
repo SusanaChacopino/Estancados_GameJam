@@ -14,16 +14,14 @@ public class SCR_Chuches : MonoBehaviour
     public float spawnAltura;
     public float chuche1Percent;
     public float frutaPercent;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         InvokeRepeating("SpawnFruta", 0f, frecuencia);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    void Update(){
     }
 
     void SpawnFruta() 

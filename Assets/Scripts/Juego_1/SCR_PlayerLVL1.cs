@@ -8,6 +8,8 @@ public class SCR_PlayerLVL1 : MonoBehaviour
 
     public Rigidbody2D rb;
 
+    
+
     private Vector2 moverDireccion;
     void Start()
     {
@@ -28,4 +30,6 @@ public class SCR_PlayerLVL1 : MonoBehaviour
         rb.linearVelocity = new Vector2 (moverDireccion.x*velocidad,0);
     }
 
+    
+    
 }
