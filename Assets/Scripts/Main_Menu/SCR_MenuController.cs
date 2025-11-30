@@ -5,6 +5,7 @@ public class SCR_MenuController : MonoBehaviour
 {
     int NextLvl, PastLvl;
     bool Paused = false, SkipHints = false;
+    public GameObject PauseMenu, GameUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -58,7 +59,7 @@ public class SCR_MenuController : MonoBehaviour
         if(Level == 4) 
         {
             //Menú final
-            SceneManager.LoadScene(4);
+            SceneManager.LoadScene(5);
         }
 
 
@@ -101,7 +102,7 @@ public class SCR_MenuController : MonoBehaviour
         if (ButtonPressed == 3)
         {
             //Ajustes
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(4);
         }
         if (ButtonPressed == 4)
         {
@@ -111,11 +112,26 @@ public class SCR_MenuController : MonoBehaviour
         if (ButtonPressed == 5)
         {
             Paused = true;
+            Pause();
         }
         if (ButtonPressed == 6)
         {
             Paused = false;
         }
     }
-    
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        Instantiate(PauseMenu);
+    }
+
+    public void Resume()
+    {
+        GameObject PauseMenuToDestroy = GameObject.Find("Pause menu(Clone)");
+        Destroy(PauseMenuToDestroy);
+        Time.timeScale = 1;
+    }
+
+
  }

@@ -44,3 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5306650278175be47902c4934360eb85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PauseMenu: {fileID: 4140652323815410868, guid: 5b1327026a8a83c4abf58559dd9c917e, type: 3}
+  GameUI: {fileID: 4344944823261745013, guid: 8694cea85bdf2ee40be94b7158b73bed, type: 3}
