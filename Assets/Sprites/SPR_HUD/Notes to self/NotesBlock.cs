@@ -3,7 +3,7 @@ using UnityEngine;
 public class NotesBlock
 {
     /*
-        -Explicacion
+        -pantallas de explicacio'n
 
         -Menu final
 
