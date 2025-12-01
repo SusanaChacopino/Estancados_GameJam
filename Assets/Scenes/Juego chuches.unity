@@ -151,12 +151,18 @@ MonoBehaviour:
   chuche1: {fileID: 8281019848290985527, guid: 78102dfef0ae7df42a0e3b7acd6abff6, type: 3}
   chuche2: {fileID: 5410193082490703801, guid: 041ba9fc34291f54380282e6b2b9dd16, type: 3}
   fruta: {fileID: 8586575423423472466, guid: 3030c0ec6c9820b43b02430023e17469, type: 3}
-  frecuencia: 1.5
-  minHorizontal: -10
-  maxHorizontal: 10
-  spawnAltura: 7
+  frecuenciaInicial: 2
+  frecuenciaMinima: 0.8
+  tiempoParaAcelerar: 10
+  porcentajeReduccion: 0.05
+  margenX: 0.5
+  offsetSpawnAltura: 2
   chuche1Percent: 80
   frutaPercent: 40
+  velocidadCaidaInicial: 3
+  velocidadCaidaMax: 12
+  tiempoParaAceleracionCaida: 10
+  porcentajeAumento: 0.05
 --- !u!4 &134102951
 Transform:
   m_ObjectHideFlags: 0

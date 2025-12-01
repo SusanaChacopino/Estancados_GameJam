@@ -3,26 +3,23 @@ using UnityEngine.Rendering;
 
 public class SCR_FrutasCaida : MonoBehaviour
 {
-    [Header("Velocidades")]
-    public float velocidadMin;
-    public float velocidadMax;
-    [SerializeField]
-    float velocidad;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        velocidad=Random.Range(velocidadMin, velocidadMax);
-        
-    }
+    [Header("Parametros")]
+    [Tooltip("Altura Y en la que el objeto se destruye automáticamente")]
+    public float alturaDestruccion = -12f;
 
-    // Update is called once per frame
+    // Variable estática compartida por TODAS las instancias
+    public static float velocidadGlobal = 3f;
+
     void Update()
     {
-        transform.Translate(Vector3.down*velocidad*Time.deltaTime);
+        // Mover hacia abajo usando la velocidad global compartida
+        transform.Translate(Vector3.down * velocidadGlobal * Time.deltaTime);
 
-        if (transform.position.y<-12f) 
+        // Destruir si sale de la pantalla por abajo
+        if (transform.position.y < alturaDestruccion)
         {
             Destroy(gameObject);
         }
     }
 }
+
