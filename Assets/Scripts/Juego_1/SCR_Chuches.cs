@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SCR_Chuches : MonoBehaviour
 {
@@ -51,14 +52,26 @@ public class SCR_Chuches : MonoBehaviour
 
         SCR_FrutasCaida.velocidadGlobal = velocidadCaidaInicial;
 
-        InvokeRepeating("SpawnFruta", 0f, frecuenciaActual);
+        StartCoroutine(SpawnearFrutasCoroutine());
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(tiempoTranscurrido);
+        //Debug.Log(tiempoTranscurrido);
         TimerSpawn();
+    }
+
+    IEnumerator SpawnearFrutasCoroutine()
+    {
+        while (true)  // Loop infinito
+        {
+            // Esperar el tiempo de la frecuencia actual
+            yield return new WaitForSeconds(frecuenciaActual);
+
+            // Spawnear fruta
+            SpawnFruta();
+        }
     }
 
     void SpawnFruta() 
@@ -144,9 +157,6 @@ public class SCR_Chuches : MonoBehaviour
             float objetosPorMinutoDespues = 60f / nuevaFrecuencia;
 
             frecuenciaActual = nuevaFrecuencia;
-
-            CancelInvoke("SpawnFruta");
-            InvokeRepeating("SpawnFruta", 0f, frecuenciaActual);
         }
 
 
