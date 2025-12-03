@@ -2,18 +2,33 @@ using UnityEngine;
 
 public class SCR_PlayerLVL2 : MonoBehaviour{
     public float fuerzaGiro;
-    private Quaternion posicionInicial;
+
+    //límites
     public float limiteIzq, limiteDer;
     public bool izq;
 
+    //caída
+    private Quaternion posicionInicial;
+
+    //balanceo
+    private float tiempoEspera;
+    private float tiempoActual;
+    public bool correcto;
+
     void Start(){
-        fuerzaGiro = 0.2f;
+        fuerzaGiro = 50f;
         posicionInicial = transform.rotation;
-        limiteIzq = 35f;
-        limiteDer = 105f;
+        limiteIzq = 45f;
+        limiteDer = 315f;
+        tiempoEspera = 0.5f;
+        tiempoActual = Time.time;
+        correcto = false;
     }
 
     void Update(){
+
+        Balanceo();
+
         //controlador
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)){
             transform.Rotate(0f, 0f, fuerzaGiro, Space.World);
@@ -21,29 +36,33 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)){
             transform.Rotate(0f, 0f, -fuerzaGiro, Space.World);
         }
-
         Limites();
     }
 
     private void Limites(){
-        //ESTO ESTÁ POR REVISAR, falla el límite derecho
-
-        //esto está porque eulerangles no cuenta num negativos
-        if (transform.eulerAngles.z < 180){
-            izq = true;
-        }
-        if (transform.eulerAngles.z >= 180){
-            izq = false;
-        }
-
         //límite
-        if (izq && transform.eulerAngles.z > limiteIzq){
-            Debug.Log("Límite atravesado izq");
-            //transform.rotation = posicionInicial;
+        if (izq && transform.eulerAngles.z > limiteIzq || !izq && transform.eulerAngles.z < limiteDer){
+            Debug.Log("Límite atravesado");
+            transform.rotation = posicionInicial;
             //cambiar anim a caída
         }
-        if (!izq && transform.eulerAngles.z < limiteDer){
-            Debug.Log("Límite atravesado der");
+    }
+
+    private void Balanceo(){
+        //si está en la derecha o en la izquierda
+        if (transform.eulerAngles.z < 180) izq = true;
+        else izq = false;
+
+        //Debug.Log("Balanceo accedido");
+
+        if (tiempoEspera <= tiempoActual){
+            Debug.Log("Balanceo accedido");
+            transform.Rotate(0f, 0f, fuerzaGiro, Space.World);
+            if (correcto){
+                correcto = false;
+                tiempoEspera = Random.Range(0.5f,4f);
+                tiempoActual = Time.time;
+            }
         }
     }
 }
