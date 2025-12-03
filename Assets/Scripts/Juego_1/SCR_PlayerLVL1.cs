@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SCR_PlayerLVL1 : MonoBehaviour
 {
@@ -6,13 +6,19 @@ public class SCR_PlayerLVL1 : MonoBehaviour
     [Header("Movimiento")]
     public float velocidad;
 
+    [Header("Referencias")]
     public Rigidbody2D rb;
 
-    
-
+    private float margenPantalla=0.5f;    
     private Vector2 moverDireccion;
+    private Camera camaraPrincipal;
+    private float limiteIzq;
+    private float limiteDer;
     void Start()
     {
+        camaraPrincipal = Camera.main;
+
+        CalcularLimitesPantalla();
         
     }
 
@@ -20,6 +26,23 @@ public class SCR_PlayerLVL1 : MonoBehaviour
     void Update()
     {
         Movimiento();
+    }
+
+    void CalcularLimitesPantalla()
+    {
+        if (camaraPrincipal == null) 
+        {
+            return;
+        }
+
+        float alturaCamara = camaraPrincipal.orthographicSize;
+
+        float anchorCamara = alturaCamara * camaraPrincipal.aspect;
+
+        Vector3 posicionCamara = camaraPrincipal.transform.position;
+        
+        limiteIzq = posicionCamara.x-anchorCamara+margenPantalla;
+        limiteIzq = posicionCamara.x + anchorCamara - margenPantalla;
     }
 
     void Movimiento() 
