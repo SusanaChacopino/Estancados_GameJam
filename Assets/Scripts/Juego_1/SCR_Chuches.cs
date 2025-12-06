@@ -77,7 +77,7 @@ public class SCR_Chuches : MonoBehaviour
     void SpawnFruta() 
     {
         float x = Random.Range(minHorizontal, maxHorizontal);
-        Vector3 pos = new Vector3(x, spawnAltura, 0);
+        Vector3 pos = new Vector3(x, spawnAltura, -0.5f);
 
         float r = Random.value * 100f;
 
