@@ -290,6 +290,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameUI
       objectReference: {fileID: 0}
+    - target: {fileID: 4344944823261745013, guid: 8694cea85bdf2ee40be94b7158b73bed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8316959393552635444, guid: 8694cea85bdf2ee40be94b7158b73bed, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -456,6 +460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "MenuExplicaci\xF3n"
       objectReference: {fileID: 0}
+    - target: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -479,7 +487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2988717754773590079, guid: aa81d7891e1bf564a84f877eb1acb955, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3086943308663311576, guid: aa81d7891e1bf564a84f877eb1acb955, type: 3}
       propertyPath: m_Pivot.x

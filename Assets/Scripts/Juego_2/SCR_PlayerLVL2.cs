@@ -14,6 +14,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
     private float tiempoEspera;
     private float tiempoActual;
     public bool correcto;
+    private int direccion;
 
     void Start(){
         fuerzaGiro = 50f;
@@ -37,6 +38,12 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
             transform.Rotate(0f, 0f, -fuerzaGiro, Space.World);
         }
         Limites();
+    }
+
+    private void DireccionYTecla(){
+        int numAleatorio = Random.Range(1,3);
+        if(numAleatorio == 1) direccion = -1;
+        if(numAleatorio == 2) direccion = 1;
     }
 
     private void Limites(){
