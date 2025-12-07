@@ -5,10 +5,13 @@ public class timer : MonoBehaviour
 {
     [Header("Configuración")]
     public RectTransform lenguaRect; // Arrastramos aquí el RectTransform de la lengua
-    public float tiempoTotal = 10f;
+    public float tiempoTotal = 30f;
 
     private float anchoInicial;
     private float tiempoRestante;
+
+    public SCR_ColisionesPuntos sistemaPuntos;
+    public SCR_MenuController menuController;
 
     void Start()
     {
@@ -21,6 +24,7 @@ public class timer : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(tiempoRestante);
         if (tiempoRestante > 0)
         {
             tiempoRestante -= Time.deltaTime;
@@ -36,9 +40,12 @@ public class timer : MonoBehaviour
         }
         else
         {
+            Debug.Log("se acabo el tiempo");
             // Al finalizar, ancho a 0
             lenguaRect.sizeDelta = new Vector2(0, lenguaRect.sizeDelta.y);
+            menuController.LoadScene(4);
             // Fin del juego...
+
         }
     }
 }
