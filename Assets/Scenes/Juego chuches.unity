@@ -1137,7 +1137,6 @@ MonoBehaviour:
   nombreSiguienteNivel: Juego equilibrio
   scriptPuntos: {fileID: 1658173765}
   nivelCompletado: 0
-  rachaTiempo: {fileID: 1088921687}
 --- !u!4 &839329503
 Transform:
   m_ObjectHideFlags: 0
@@ -1377,17 +1376,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
---- !u!114 &1088921687 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8420740839829553601, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
-  m_PrefabInstance: {fileID: 1088921686}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2350a97cdc1bcce4a8e064ef0614a299, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1154978644
 GameObject:
   m_ObjectHideFlags: 0

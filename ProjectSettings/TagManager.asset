@@ -7,6 +7,7 @@ TagManager:
   - 1p
   - 2p
   - fruta
+  - Tutorial
   layers:
   - Default
   - TransparentFX

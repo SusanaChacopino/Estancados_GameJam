@@ -26,6 +26,9 @@ public class SCR_Explicacion : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        bool tutorialesActivos = PlayerPrefs.GetInt("TutorialesActivos", 1) == 1;
+        gameObject.SetActive(tutorialesActivos);
+
         Time.timeScale = 0;
 
         teclaW.gameObject.SetActive(false);
