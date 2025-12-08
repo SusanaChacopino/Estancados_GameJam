@@ -820,11 +820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 756ea9aaf99203d479c7e05082f49922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fuerzaGiro: 0
-  limiteIzq: 0
-  limiteDer: 0
-  izq: 0
-  correcto: 0
+  fuerzaGiro: 0.08
+  enEspera: 0
 --- !u!114 &1449785438 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3497758993396076318, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
