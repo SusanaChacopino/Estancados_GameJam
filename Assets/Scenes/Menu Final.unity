@@ -869,7 +869,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textoPuntos: {fileID: 1555336219}
   textoTiempo: {fileID: 216196157}
-  rachaTiempo: {fileID: 8420740839829553601, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
 --- !u!4 &1338863553
 Transform:
   m_ObjectHideFlags: 0
@@ -1048,6 +1047,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1338863552}
+        m_TargetAssemblyTypeName: SCR_UI_TiempoRacha, Assembly-CSharp
+        m_MethodName: EliminarRachaTiempo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1355,6 +1366,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: SCR_MenuController, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1338863552}
+        m_TargetAssemblyTypeName: SCR_UI_TiempoRacha, Assembly-CSharp
+        m_MethodName: EliminarRachaTiempo
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
