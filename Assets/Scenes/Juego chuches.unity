@@ -840,7 +840,7 @@ PrefabInstance:
       objectReference: {fileID: 994926905}
     - target: {fileID: 3475209789332567461, guid: 3faedc0eb42247f4baa955b975b63988, type: 3}
       propertyPath: tiempoTotal
-      value: 30
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3475209789332567461, guid: 3faedc0eb42247f4baa955b975b63988, type: 3}
       propertyPath: sistemaPuntos
@@ -1137,6 +1137,7 @@ MonoBehaviour:
   nombreSiguienteNivel: Juego equilibrio
   scriptPuntos: {fileID: 1658173765}
   nivelCompletado: 0
+  rachaTiempo: {fileID: 1088921687}
 --- !u!4 &839329503
 Transform:
   m_ObjectHideFlags: 0
@@ -1319,6 +1320,74 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9049409195332411720, guid: 3faedc0eb42247f4baa955b975b63988, type: 3}
   m_PrefabInstance: {fileID: 684623196}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1088921686
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 608.5742
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 553.6908
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -53.500492
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084886752645418757, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6260751215950156054, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+      propertyPath: m_Name
+      value: RachaTiempo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+--- !u!114 &1088921687 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8420740839829553601, guid: d515c73288314c84da4030d5b1e3acec, type: 3}
+  m_PrefabInstance: {fileID: 1088921686}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2350a97cdc1bcce4a8e064ef0614a299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1154978644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2126,3 +2195,4 @@ SceneRoots:
   - {fileID: 1154978645}
   - {fileID: 839329503}
   - {fileID: 7610912895869259855}
+  - {fileID: 1088921686}

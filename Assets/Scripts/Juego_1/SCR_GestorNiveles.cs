@@ -74,6 +74,7 @@ public class SCR_GestorNiveles : MonoBehaviour
         if (Application.CanStreamedLevelBeLoaded(nombreSiguienteNivel))
         {
             SceneManager.LoadScene(nombreSiguienteNivel);
+            SCR_RachaTiempo.instance.SumarVictoria();
         }
         else
         {

@@ -5,7 +5,7 @@ public class timer : MonoBehaviour
 {
     [Header("Configuración")]
     public RectTransform lenguaRect; // Arrastramos aquí el RectTransform de la lengua
-    public float tiempoTotal = 30f;
+    public float tiempoTotal = 100f;
 
     private float anchoInicial;
     private float tiempoRestante;
