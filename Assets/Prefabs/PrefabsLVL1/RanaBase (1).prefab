@@ -258,6 +258,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lenguaRect: {fileID: 0}
-  tiempoTotal: 100
+  tiempoTotal: 30
   sistemaPuntos: {fileID: 0}
   menuController: {fileID: 0}
