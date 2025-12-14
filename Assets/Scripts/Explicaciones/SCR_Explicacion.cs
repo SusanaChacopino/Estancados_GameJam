@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class SCR_Explicacion : MonoBehaviour
 {
+    public SCR_DesactivarTutorial TutorialBool;
+
     public TextMeshProUGUI textoExplicación;
     public VideoPlayer videoExplicacion;
 
@@ -29,7 +31,9 @@ public class SCR_Explicacion : MonoBehaviour
         bool tutorialesActivos = PlayerPrefs.GetInt("TutorialesActivos", 1) == 1;
         gameObject.SetActive(tutorialesActivos);
 
-        Time.timeScale = 0;
+        if (!TutorialBool.tutorialesActivos)
+            Time.timeScale = 0;
+
 
         teclaW.gameObject.SetActive(false);
         teclaA.gameObject.SetActive(false);

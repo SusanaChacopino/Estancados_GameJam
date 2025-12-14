@@ -3,9 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class SCR_MenuController : MonoBehaviour
 {
-    int NextLvl, PastLvl;
+
+
+    int NextLvl, PastLvl, CurrentLvl;
     bool Paused = false, SkipHints = false;
-    public GameObject PauseMenu, GameUI;
+    public GameObject PauseMenu, GameUI, Ajustes;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,18 +44,21 @@ public class SCR_MenuController : MonoBehaviour
         if (Level == 1)
         {
             //Chuches
+            CurrentLvl = 1;
             SceneManager.LoadScene(1);
             LoadExplicacion(1);
         }
         if (Level == 2)
         {
             //Equilibrio
+            CurrentLvl = 2;
             SceneManager.LoadScene(2);
             LoadExplicacion(2);
         }
         if (Level == 3)
         {
             //Robar
+            CurrentLvl = 3;
             SceneManager.LoadScene(3);
             LoadExplicacion(3);
         }
@@ -102,7 +108,7 @@ public class SCR_MenuController : MonoBehaviour
         if (ButtonPressed == 3)
         {
             //Ajustes
-            SceneManager.LoadScene(4);
+            Settings();
         }
         if (ButtonPressed == 4)
         {
@@ -133,5 +139,15 @@ public class SCR_MenuController : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    public void Settings()
+    {
+        Instantiate(Ajustes);
+    }
 
- }
+    public void ExitSettings()
+    {
+        GameObject AjustesToDestroy = GameObject.Find("Ajustes(Clone)");
+        Destroy(AjustesToDestroy);
+    }
+
+}

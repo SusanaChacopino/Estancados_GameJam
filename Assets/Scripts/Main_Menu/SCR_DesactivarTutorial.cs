@@ -3,7 +3,7 @@ using UnityEngine;
 public class SCR_DesactivarTutorial : MonoBehaviour
 {
     public GameObject tickSprite;
-    private bool tutorialesActivos = true;
+    public bool tutorialesActivos = true;
 
     void Start()
     {
