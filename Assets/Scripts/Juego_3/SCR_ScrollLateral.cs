@@ -94,7 +94,7 @@ public class SCR_ScrollLateral : MonoBehaviour
             if (pieza == null) continue;
 
             // Si la pieza salió completamente por la izquierda
-            if (pieza.position.x < bordeIzquierdo)
+            if (pieza.position.x < bordeIzquierdo-10)
             {
                 // Encontrar la pieza más a la derecha
                 float maxX = float.MinValue;
