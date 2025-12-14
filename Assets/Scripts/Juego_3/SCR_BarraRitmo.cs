@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-
 public class SCR_BarraRitmo : MonoBehaviour
 {
     [Header("Configuración de la Barra")]
-    [Tooltip("Ancho total de la barra en unidades del mundo")]
+    [Tooltip("Si está activo, calcula el ancho desde el sprite")]
+    public bool calcularAnchoAutomatico = true;
+
+    [Tooltip("Ancho de la barra (manual o automático)")]
     [Range(1f, 20f)]
     public float anchoBarra = 10f;
 
@@ -54,6 +56,7 @@ public class SCR_BarraRitmo : MonoBehaviour
 
     void Start()
     {
+        CalcularAnchoAutomatico();
         CalcularLimites();
         InicializarIndicador();
         GenerarPosicionObjetivo();
@@ -67,13 +70,34 @@ public class SCR_BarraRitmo : MonoBehaviour
         VerificarInput();
     }
 
+    void CalcularAnchoAutomatico()
+    {
+        if (!calcularAnchoAutomatico)
+        {
+            Debug.Log($"[BarraRitmo] Usando ancho manual: {anchoBarra}");
+            return;
+        }
+
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            anchoBarra = spriteRenderer.bounds.size.x;
+            Debug.Log($"[BarraRitmo] Ancho automático: {anchoBarra:F2} unidades");
+        }
+        else
+        {
+            Debug.LogWarning($"[BarraRitmo] No hay SpriteRenderer. Usando manual: {anchoBarra}");
+        }
+    }
+
     void CalcularLimites()
     {
-        // Calcular límites HORIZONTALES basados en la posición de esta barra
-        limiteDerecho = transform.position.x + (anchoBarra / 2f);
-        limiteIzquierdo = transform.position.x - (anchoBarra / 2f);
+        // Límites RELATIVOS (coordenadas locales)
+        limiteDerecho = anchoBarra / 2f;
+        limiteIzquierdo = -anchoBarra / 2f;
 
-        Debug.Log($"[BarraRitmo] Límites: Derecho={limiteDerecho:F2}, Izquierdo={limiteIzquierdo:F2}");
+        Debug.Log($"[BarraRitmo] Límites: Izq={limiteIzquierdo:F2}, Der={limiteDerecho:F2}");
     }
 
     void InicializarIndicador()
@@ -84,7 +108,6 @@ public class SCR_BarraRitmo : MonoBehaviour
             return;
         }
 
-        // Empezar en el límite izquierdo
         posicionActualIndicador = limiteIzquierdo;
         ActualizarPosicionVisualIndicador();
         moviendoHaciaDerecha = true;
@@ -98,43 +121,39 @@ public class SCR_BarraRitmo : MonoBehaviour
             return;
         }
 
-        // Generar posición aleatoria dentro de la barra (evitando extremos)
-        float margen = anchoBarra * 0.1f; // 10% de margen en los lados
+        float margen = anchoBarra * 0.1f;
         posicionObjetivo = Random.Range(limiteIzquierdo + margen, limiteDerecho - margen);
 
-        // Actualizar posición visual del objetivo
-        Vector3 posObjetivo = puntoObjetivo.position;
+        // Usar localPosition (relativo al padre)
+        Vector3 posObjetivo = puntoObjetivo.localPosition;
         posObjetivo.x = posicionObjetivo;
-        puntoObjetivo.position = posObjetivo;
+        puntoObjetivo.localPosition = posObjetivo;
 
-        Debug.Log($"[BarraRitmo] Objetivo en X={posicionObjetivo:F2}");
+        Debug.Log($"[BarraRitmo] Objetivo en X local={posicionObjetivo:F2}");
     }
 
     void MoverIndicador()
     {
-        // Calcular desplazamiento
         float desplazamiento = velocidadIndicador * Time.deltaTime;
 
         if (moviendoHaciaDerecha)
         {
             posicionActualIndicador += desplazamiento;
 
-            // ¿Llegó al límite derecho?
             if (posicionActualIndicador >= limiteDerecho)
             {
                 posicionActualIndicador = limiteDerecho;
-                moviendoHaciaDerecha = false; // Cambiar dirección
+                moviendoHaciaDerecha = false;
             }
         }
         else
         {
             posicionActualIndicador -= desplazamiento;
 
-            // ¿Llegó al límite izquierdo?
             if (posicionActualIndicador <= limiteIzquierdo)
             {
                 posicionActualIndicador = limiteIzquierdo;
-                moviendoHaciaDerecha = true; // Cambiar dirección
+                moviendoHaciaDerecha = true;
             }
         }
 
@@ -145,17 +164,14 @@ public class SCR_BarraRitmo : MonoBehaviour
     {
         if (indicador == null) return;
 
-        // Actualizar posición X (horizontal)
-        Vector3 posIndicador = indicador.position;
+        // Usar localPosition (relativo al padre)
+        Vector3 posIndicador = indicador.localPosition;
         posIndicador.x = posicionActualIndicador;
-        indicador.position = posIndicador;
+        indicador.localPosition = posIndicador;
 
-        // Rotar según dirección
         if (rotarIndicador)
         {
             float anguloObjetivo = moviendoHaciaDerecha ? anguloIzquierdaADerecha : anguloDerechaAIzquierda;
-
-            // Rotar suavemente
             Quaternion rotacionObjetivo = Quaternion.Euler(0, 0, anguloObjetivo);
             indicador.rotation = Quaternion.Lerp(indicador.rotation, rotacionObjetivo, Time.deltaTime * 10f);
         }
@@ -163,7 +179,6 @@ public class SCR_BarraRitmo : MonoBehaviour
 
     void VerificarInput()
     {
-        // Detectar tecla de acción (espacio)
         if (Input.GetKeyDown(KeyCode.Space))
         {
             EvaluarAcierto();
@@ -172,32 +187,27 @@ public class SCR_BarraRitmo : MonoBehaviour
 
     void EvaluarAcierto()
     {
-        // Calcular distancia entre indicador y objetivo (HORIZONTAL)
         float distancia = Mathf.Abs(posicionActualIndicador - posicionObjetivo);
 
         Debug.Log($"[BarraRitmo] Distancia: {distancia:F2}");
 
-        // Evaluar según tolerancia
         if (distancia <= toleranciaPerfecto)
         {
-            // ¡PERFECTO!
             Debug.Log("[BarraRitmo] ¡PERFECTO!");
             OnAciertoPerfecto?.Invoke();
             GenerarNuevoObjetivo();
         }
         else if (distancia <= toleranciaAcierto)
         {
-            // Acierto normal
             Debug.Log("[BarraRitmo] ¡Acierto!");
             OnAcierto?.Invoke();
             GenerarNuevoObjetivo();
         }
         else
         {
-            // Fallo - también genera nuevo objetivo
             Debug.Log("[BarraRitmo] Fallaste");
             OnFallo?.Invoke();
-            GenerarNuevoObjetivo(); // ← AÑADIDO: Cambia de posición al fallar
+            GenerarNuevoObjetivo();
         }
     }
 
@@ -206,7 +216,6 @@ public class SCR_BarraRitmo : MonoBehaviour
         GenerarPosicionObjetivo();
     }
 
-    // Métodos públicos
     public float ObtenerPosicionIndicador()
     {
         return posicionActualIndicador;
@@ -225,7 +234,6 @@ public class SCR_BarraRitmo : MonoBehaviour
     public void AumentarVelocidad(float incremento)
     {
         velocidadIndicador += incremento;
-        Debug.Log($"[BarraRitmo] Velocidad aumentada a {velocidadIndicador:F2}");
     }
 
     public void ReiniciarBarra()
@@ -240,4 +248,35 @@ public class SCR_BarraRitmo : MonoBehaviour
         juegoActivo = false;
     }
 
+    void OnDrawGizmos()
+    {
+        if (!Application.isPlaying) return;
+
+        // Convertir límites locales a coordenadas del mundo para dibujar
+        Vector3 posicionMundo = transform.position;
+
+        Gizmos.color = Color.red;
+        float offsetY = 0.5f;
+
+        // Límite derecho
+        Vector3 limiteDer = new Vector3(posicionMundo.x + limiteDerecho, posicionMundo.y, 0);
+        Gizmos.DrawLine(limiteDer + Vector3.down * offsetY, limiteDer + Vector3.up * offsetY);
+
+        // Límite izquierdo
+        Vector3 limiteIzq = new Vector3(posicionMundo.x + limiteIzquierdo, posicionMundo.y, 0);
+        Gizmos.DrawLine(limiteIzq + Vector3.down * offsetY, limiteIzq + Vector3.up * offsetY);
+
+        // Zona de acierto
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(
+            new Vector3(posicionMundo.x + posicionObjetivo, posicionMundo.y, 0),
+            toleranciaAcierto
+        );
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(
+            new Vector3(posicionMundo.x + posicionObjetivo, posicionMundo.y, 0),
+            toleranciaPerfecto
+        );
+    }
 }
