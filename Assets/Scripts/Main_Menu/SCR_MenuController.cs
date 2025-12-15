@@ -65,7 +65,8 @@ public class SCR_MenuController : MonoBehaviour
         if(Level == 4) 
         {
             //Menú final
-            SceneManager.LoadScene(5);
+            //SceneManager.LoadScene(5);
+            Application.Quit();
         }
 
 

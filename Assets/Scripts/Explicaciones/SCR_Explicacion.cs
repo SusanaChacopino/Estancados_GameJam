@@ -31,9 +31,11 @@ public class SCR_Explicacion : MonoBehaviour
         bool tutorialesActivos = PlayerPrefs.GetInt("TutorialesActivos", 1) == 1;
         gameObject.SetActive(tutorialesActivos);
 
-        if (!TutorialBool.tutorialesActivos)
+        /*if (!TutorialBool.tutorialesActivos)
             Time.timeScale = 0;
+        */
 
+        Time.timeScale = 0;
 
         teclaW.gameObject.SetActive(false);
         teclaA.gameObject.SetActive(false);

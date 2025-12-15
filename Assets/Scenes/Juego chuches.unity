@@ -2616,6 +2616,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7933596907053707208, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: bf83798e0932fc6468feae0ec7fdd731, type: 3}
     - target: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
       propertyPath: m_Name
       value: "MenuExplicaci\xF3n"
