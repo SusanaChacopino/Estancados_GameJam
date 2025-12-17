@@ -5,12 +5,15 @@ public class SCR_ColisionesPuntos : MonoBehaviour
     [Header("puntos")]
     [SerializeField] private float puntaje;
 
+    public AudioSource sonidoComer;
+
     [Header("Animacion")]
     public Animator animatorJugador;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         puntaje = 0;
+        sonidoComer = GetComponent<AudioSource>();
 
     }
 
@@ -29,6 +32,7 @@ public class SCR_ColisionesPuntos : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log(puntaje);
             comioAlgo = true;
+            sonidoComer.Play();
         }
 
         if (other.gameObject.CompareTag("2p"))
@@ -37,6 +41,7 @@ public class SCR_ColisionesPuntos : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log(puntaje);
             comioAlgo = true;
+            sonidoComer.Play();
         }
 
         if (other.gameObject.CompareTag("fruta"))
@@ -45,6 +50,7 @@ public class SCR_ColisionesPuntos : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log(puntaje);
             comioAlgo=true;
+            sonidoComer.Play();
         }
 
         if (comioAlgo&&animatorJugador!=null) 
