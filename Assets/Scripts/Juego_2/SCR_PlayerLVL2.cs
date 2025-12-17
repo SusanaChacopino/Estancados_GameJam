@@ -2,6 +2,9 @@ using UnityEngine;
 using TMPro;
 
 public class SCR_PlayerLVL2 : MonoBehaviour{
+    //Puntos
+    public GameObject jugador;
+
     //balanceo
     public TMP_Text teclasTXT;
     public float fuerzaGiro = 0.08f;
@@ -102,7 +105,8 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
         }
     }
 
-    private void Caida(){
+    public void Caida(){
+        jugador.GetComponent<SCR_Puntos>().puntos -= 3;
         teclasTXT.text = ("Has caído");
         transform.rotation = posicionInicial;
         enEspera = true;
