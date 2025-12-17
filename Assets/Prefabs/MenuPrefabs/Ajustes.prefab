@@ -157,16 +157,16 @@ MonoBehaviour:
   m_HandleRect: {fileID: 3964351397254873512}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 100
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5174438938399077921}
         m_TargetAssemblyTypeName: VolumeController, Assembly-CSharp
-        m_MethodName: SetVolumeFromSlider
-        m_Mode: 1
+        m_MethodName: SetVolume
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -188,8 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundSlider: {fileID: 598653706634295038}
-  masterMixer: {fileID: 24100000, guid: 40d7d2746441d014db1fc9ea719263f2, type: 2}
-  audios: {fileID: 0}
+  masterMixer: {fileID: 24100000, guid: 0eccf89145195254d8b80f30ac53803c, type: 2}
 --- !u!1 &1856730118744570911
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,38 +4,46 @@ using UnityEngine.Audio;
 
 public class VolumeController : MonoBehaviour
 {
-    public Slider soundSlider;
-    public AudioMixer masterMixer;
-    public AudioSource audios;
+
+    public Slider soundSlider;      // Tu Slider de la UI
+    public AudioMixer masterMixer;  // Tu asset de AudioMixer
+
+    // Este nombre debe ser IDÉNTICO al nombre del parámetro en el Mixer
+    private const string MIXER_PARAM = "MasterVolume";
 
     void Start()
     {
-        audios = GetComponent<AudioSource>();
-        float saved = PlayerPrefs.GetFloat("SavedMasterVolume");
-        SetVolume(saved);
+
+        float savedVol = PlayerPrefs.GetFloat("SavedMasterVolume", 1f); //el 1f es = al 100%
+
+        soundSlider.value = savedVol;
+
+        SetVolume(savedVol);
+
+
+        soundSlider.onValueChanged.AddListener(SetVolume);
     }
 
-    public void SetVolume(float value)
+
+    public void SetVolume(float sliderValue)
     {
-        if (value < 1f)
-            value = 0.001f;
 
-        RefreshSlider(value);
+        PlayerPrefs.SetFloat("SavedMasterVolume", sliderValue);
 
-        PlayerPrefs.SetFloat("SavedMasterVolume", value);
 
-        float db = Mathf.Log10(value / 100f) * 20f;
-        masterMixer.SetFloat("MasterVolume", db);
-        audios.volume = db;
-    }
+        float db;
 
-    public void SetVolumeFromSlider()
-    {
-        SetVolume(soundSlider.value);
-    }
+        if (sliderValue <= 0.1f)
+        {
+            db = -800f; // Silencio total (evitamos el error matemático de log(0))
+        }
+        else
+        {
 
-    void RefreshSlider(float value)
-    {
-        soundSlider.value = value;
+            db = Mathf.Log10(sliderValue) * 20;
+        }
+
+        // Enviamos el valor calculado al Mixer
+        masterMixer.SetFloat(MIXER_PARAM, db);
     }
 }
