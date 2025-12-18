@@ -1,44 +1,34 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
+
 public class SCR_BarraRitmo : MonoBehaviour
 {
     [Header("Configuración de la Barra")]
-    [Tooltip("Si está activo, calcula el ancho desde el sprite")]
     public bool calcularAnchoAutomatico = true;
-
-    [Tooltip("Ancho de la barra (manual o automático)")]
     [Range(1f, 20f)]
     public float anchoBarra = 10f;
-
-    [Tooltip("Velocidad de movimiento del indicador")]
     [Range(1f, 20f)]
     public float velocidadIndicador = 5f;
 
     [Header("Referencias Visuales")]
-    [Tooltip("Transform del indicador que se mueve (cuchillo)")]
     public Transform indicador;
-
-    [Tooltip("Transform del punto objetivo (billetes)")]
     public Transform puntoObjetivo;
 
     [Header("Zona de Acierto")]
-    [Tooltip("Tolerancia para considerar un acierto (en unidades)")]
     [Range(0.1f, 2f)]
     public float toleranciaAcierto = 0.8f;
-
-    [Tooltip("Tolerancia para acierto perfecto")]
     [Range(0.05f, 0.5f)]
     public float toleranciaPerfecto = 0.3f;
 
     [Header("Animación del Indicador")]
-    [Tooltip("¿Rotar el indicador según dirección?")]
     public bool rotarIndicador = true;
-
-    [Tooltip("Ángulo cuando va a la derecha")]
     public float anguloIzquierdaADerecha = 0f;
-
-    [Tooltip("Ángulo cuando va a la izquierda")]
     public float anguloDerechaAIzquierda = 180f;
+
+    [Header("Feedback Visual")]
+    [Range(0.1f, 2f)]
+    public float duracionEfectoRojo = 0.3f;
 
     [Header("Estado")]
     [SerializeField] private float posicionActualIndicador = 0f;
@@ -53,6 +43,8 @@ public class SCR_BarraRitmo : MonoBehaviour
     private float limiteDerecho;
     private float limiteIzquierdo;
     private float posicionObjetivo;
+    private Coroutine efectoRojoCoroutine = null;
+    private Color colorOriginalObjetivo = Color.white;
 
     void Start()
     {
@@ -60,6 +52,40 @@ public class SCR_BarraRitmo : MonoBehaviour
         CalcularLimites();
         InicializarIndicador();
         GenerarPosicionObjetivo();
+
+        // Guardar color original
+        if (puntoObjetivo != null)
+        {
+            SpriteRenderer sr = puntoObjetivo.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                colorOriginalObjetivo = sr.color;
+            }
+        }
+    }
+
+    void OnEnable()
+    {
+        // Detener efecto rojo si existe
+        if (efectoRojoCoroutine != null)
+        {
+            StopCoroutine(efectoRojoCoroutine);
+            efectoRojoCoroutine = null;
+        }
+
+        // Restaurar color
+        RestaurarColorObjetivo();
+    }
+
+    void RestaurarColorObjetivo()
+    {
+        if (puntoObjetivo == null) return;
+
+        SpriteRenderer sr = puntoObjetivo.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.color = colorOriginalObjetivo;
+        }
     }
 
     void Update()
@@ -72,39 +98,24 @@ public class SCR_BarraRitmo : MonoBehaviour
 
     void CalcularAnchoAutomatico()
     {
-        if (!calcularAnchoAutomatico)
-        {
-            
-            return;
-        }
+        if (!calcularAnchoAutomatico) return;
 
         SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
         if (spriteRenderer != null)
         {
             anchoBarra = spriteRenderer.bounds.size.x;
-           
-        }
-        else
-        {
-           
         }
     }
 
     void CalcularLimites()
     {
-        // Límites RELATIVOS (coordenadas locales)
         limiteDerecho = anchoBarra / 2f;
         limiteIzquierdo = -anchoBarra / 2f;
-
     }
 
     void InicializarIndicador()
     {
-        if (indicador == null)
-        {
-            return;
-        }
+        if (indicador == null) return;
 
         posicionActualIndicador = limiteIzquierdo;
         ActualizarPosicionVisualIndicador();
@@ -113,19 +124,14 @@ public class SCR_BarraRitmo : MonoBehaviour
 
     void GenerarPosicionObjetivo()
     {
-        if (puntoObjetivo == null)
-        {
-            return;
-        }
+        if (puntoObjetivo == null) return;
 
         float margen = anchoBarra * 0.1f;
         posicionObjetivo = Random.Range(limiteIzquierdo + margen, limiteDerecho - margen);
 
-        // Usar localPosition (relativo al padre)
         Vector3 posObjetivo = puntoObjetivo.localPosition;
         posObjetivo.x = posicionObjetivo;
         puntoObjetivo.localPosition = posObjetivo;
-
     }
 
     void MoverIndicador()
@@ -160,7 +166,6 @@ public class SCR_BarraRitmo : MonoBehaviour
     {
         if (indicador == null) return;
 
-        // Usar localPosition (relativo al padre)
         Vector3 posIndicador = indicador.localPosition;
         posIndicador.x = posicionActualIndicador;
         indicador.localPosition = posIndicador;
@@ -185,7 +190,6 @@ public class SCR_BarraRitmo : MonoBehaviour
     {
         float distancia = Mathf.Abs(posicionActualIndicador - posicionObjetivo);
 
-
         if (distancia <= toleranciaPerfecto)
         {
             OnAciertoPerfecto?.Invoke();
@@ -198,9 +202,32 @@ public class SCR_BarraRitmo : MonoBehaviour
         }
         else
         {
+            if (efectoRojoCoroutine != null)
+            {
+                StopCoroutine(efectoRojoCoroutine);
+            }
+            efectoRojoCoroutine = StartCoroutine(EfectoRojoFallo());
+
             OnFallo?.Invoke();
-            GenerarNuevoObjetivo();
         }
+    }
+
+    IEnumerator EfectoRojoFallo()
+    {
+        if (puntoObjetivo == null) yield break;
+
+        SpriteRenderer sr = puntoObjetivo.GetComponent<SpriteRenderer>();
+        if (sr == null) yield break;
+
+        sr.color = Color.red;
+
+        yield return new WaitForSeconds(duracionEfectoRojo);
+
+        sr.color = colorOriginalObjetivo;
+
+        GenerarNuevoObjetivo();
+
+        efectoRojoCoroutine = null;
     }
 
     void GenerarNuevoObjetivo()
@@ -238,37 +265,5 @@ public class SCR_BarraRitmo : MonoBehaviour
     public void DetenerBarra()
     {
         juegoActivo = false;
-    }
-
-    void OnDrawGizmos()
-    {
-        if (!Application.isPlaying) return;
-
-        // Convertir límites locales a coordenadas del mundo para dibujar
-        Vector3 posicionMundo = transform.position;
-
-        Gizmos.color = Color.red;
-        float offsetY = 0.5f;
-
-        // Límite derecho
-        Vector3 limiteDer = new Vector3(posicionMundo.x + limiteDerecho, posicionMundo.y, 0);
-        Gizmos.DrawLine(limiteDer + Vector3.down * offsetY, limiteDer + Vector3.up * offsetY);
-
-        // Límite izquierdo
-        Vector3 limiteIzq = new Vector3(posicionMundo.x + limiteIzquierdo, posicionMundo.y, 0);
-        Gizmos.DrawLine(limiteIzq + Vector3.down * offsetY, limiteIzq + Vector3.up * offsetY);
-
-        // Zona de acierto
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(
-            new Vector3(posicionMundo.x + posicionObjetivo, posicionMundo.y, 0),
-            toleranciaAcierto
-        );
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(
-            new Vector3(posicionMundo.x + posicionObjetivo, posicionMundo.y, 0),
-            toleranciaPerfecto
-        );
     }
 }

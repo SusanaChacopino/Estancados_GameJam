@@ -96,7 +96,59 @@ public class SCR_ScrollLateral : MonoBehaviour
                 Vector3 nuevaPos = pieza.position;
                 nuevaPos.x = maxX + capa.anchoPieza;
                 pieza.position = nuevaPos;
+
+                // NUEVO: Resetear personaje al reposicionar
+                ResetearPersonaje(pieza.gameObject);
             }
+        }
+    }
+
+    void ResetearPersonaje(GameObject objeto)
+    {
+        // Solo procesar si es un personaje interceptable
+        if (objeto.CompareTag("PersonajeInterceptable"))
+        {
+            // Reactivar collider
+            Collider2D collider = objeto.GetComponent<Collider2D>();
+            if (collider != null)
+            {
+                collider.enabled = true;
+            }
+
+            // Restaurar opacidad completa
+            SpriteRenderer sr = objeto.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                Color color = sr.color;
+                color.a = 1f;
+                sr.color = color;
+            }
+
+            // NUEVO: Desactivar sprite hijo (el que indica que está robado)
+            DesactivarSpriteRobado(objeto);
+        }
+
+        // Verificar hijos también
+        foreach (Transform hijo in objeto.transform)
+        {
+            ResetearPersonaje(hijo.gameObject);
+        }
+    }
+
+    void DesactivarSpriteRobado(GameObject personaje)
+    {
+        // Buscar hijo por nombre
+        Transform hijo = personaje.transform.Find("Nube_Pelea");
+
+        // Si no lo encuentra por nombre, buscar el primer hijo
+        if (hijo == null && personaje.transform.childCount > 0)
+        {
+            hijo = personaje.transform.GetChild(0);
+        }
+
+        if (hijo != null)
+        {
+            hijo.gameObject.SetActive(false);
         }
     }
 

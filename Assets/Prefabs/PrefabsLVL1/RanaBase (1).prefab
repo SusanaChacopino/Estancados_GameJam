@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a7907bd0d8f76409d8f6ea1ea518e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lenguaRect: {fileID: 0}
+  lenguaRect: {fileID: 9049409195332411720}
   tiempoTotal: 30
   sistemaPuntos: {fileID: 0}
   menuController: {fileID: 0}
