@@ -74,7 +74,7 @@ public class SCR_BarraRitmo : MonoBehaviour
     {
         if (!calcularAnchoAutomatico)
         {
-            Debug.Log($"[BarraRitmo] Usando ancho manual: {anchoBarra}");
+            
             return;
         }
 
@@ -83,11 +83,11 @@ public class SCR_BarraRitmo : MonoBehaviour
         if (spriteRenderer != null)
         {
             anchoBarra = spriteRenderer.bounds.size.x;
-            Debug.Log($"[BarraRitmo] Ancho automático: {anchoBarra:F2} unidades");
+           
         }
         else
         {
-            Debug.LogWarning($"[BarraRitmo] No hay SpriteRenderer. Usando manual: {anchoBarra}");
+           
         }
     }
 
@@ -97,14 +97,12 @@ public class SCR_BarraRitmo : MonoBehaviour
         limiteDerecho = anchoBarra / 2f;
         limiteIzquierdo = -anchoBarra / 2f;
 
-        Debug.Log($"[BarraRitmo] Límites: Izq={limiteIzquierdo:F2}, Der={limiteDerecho:F2}");
     }
 
     void InicializarIndicador()
     {
         if (indicador == null)
         {
-            Debug.LogError("[BarraRitmo] No hay indicador asignado");
             return;
         }
 
@@ -117,7 +115,6 @@ public class SCR_BarraRitmo : MonoBehaviour
     {
         if (puntoObjetivo == null)
         {
-            Debug.LogError("[BarraRitmo] No hay punto objetivo asignado");
             return;
         }
 
@@ -129,7 +126,6 @@ public class SCR_BarraRitmo : MonoBehaviour
         posObjetivo.x = posicionObjetivo;
         puntoObjetivo.localPosition = posObjetivo;
 
-        Debug.Log($"[BarraRitmo] Objetivo en X local={posicionObjetivo:F2}");
     }
 
     void MoverIndicador()
@@ -189,23 +185,19 @@ public class SCR_BarraRitmo : MonoBehaviour
     {
         float distancia = Mathf.Abs(posicionActualIndicador - posicionObjetivo);
 
-        Debug.Log($"[BarraRitmo] Distancia: {distancia:F2}");
 
         if (distancia <= toleranciaPerfecto)
         {
-            Debug.Log("[BarraRitmo] ¡PERFECTO!");
             OnAciertoPerfecto?.Invoke();
             GenerarNuevoObjetivo();
         }
         else if (distancia <= toleranciaAcierto)
         {
-            Debug.Log("[BarraRitmo] ¡Acierto!");
             OnAcierto?.Invoke();
             GenerarNuevoObjetivo();
         }
         else
         {
-            Debug.Log("[BarraRitmo] Fallaste");
             OnFallo?.Invoke();
             GenerarNuevoObjetivo();
         }

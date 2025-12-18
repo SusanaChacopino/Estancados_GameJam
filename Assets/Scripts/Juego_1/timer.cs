@@ -24,7 +24,7 @@ public class timer : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(tiempoRestante);
+        //Debug.Log(tiempoRestante);
         if (tiempoRestante > 0)
         {
             tiempoRestante -= Time.deltaTime;
