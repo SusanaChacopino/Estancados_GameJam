@@ -1,33 +1,35 @@
 using UnityEngine;
-using TMPro;
 
 public class SCR_PlayerLVL2 : MonoBehaviour{
-    //Puntos
-    public GameObject jugador;
+    //Animaciones (en Limites())
+    private Animator animPlayer;
+    private float limiteAnim;
 
     //balanceo
-    public TMP_Text teclasTXT;
-    public float fuerzaGiro = 0.08f;
+    public float fuerzaGiro = 20f;
     private int direccion;
-    private int tecla;
+    public int tecla;
     
     //caída
     private float limite;
     private Quaternion posicionInicial;
-    private float tiempoEspera = 3f;
+    private float tiempoEspera = 1.65f;
     private float tiempoActual = 0f;
     public bool enEspera = false;
 
     //Tecla correcta
     public bool correcto = false;
     private float tiempoCorrecto;
+    public GameObject jugador;
 
     void Start(){
+        animPlayer = GetComponent<Animator>();
         Direccion();
         EleccionDeTecla();
 
         //caída
-        limite = 45f;
+        limite = 40f;
+        limiteAnim = 15f;
         posicionInicial = transform.rotation;
     }
 
@@ -40,6 +42,8 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
 
         //Al caer
         if (enEspera){
+            if (direccion==1) animPlayer.Play("Anim_CaidaIzq");
+            if (direccion==-1) animPlayer.Play("Anim_CaidaDer");
             tiempoActual += Time.deltaTime;
             direccion = 0;
             if (tiempoActual >= tiempoEspera){
@@ -53,7 +57,6 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
 
     private void EleccionDeTecla(){
         tecla = Random.Range(0,4);
-        //teclasTXT.text = ("Pulsa " + tecla);
     }
 
     private void Direccion(){
@@ -63,25 +66,22 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
     }
 
     private void Balanceo(){
-        transform.Rotate(0f, 0f, fuerzaGiro * direccion, Space.World);
+        float grados = fuerzaGiro * Time.deltaTime;
+        transform.Rotate(0f, 0f, grados * direccion, Space.World);
         //Teclas
         if (tecla == 0){
-            teclasTXT.text = ("Pulsa W");
             if (Input.GetKey(KeyCode.W)) correcto = true;
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) Caida();
         }
         if (tecla == 1){
-            teclasTXT.text = ("Pulsa A");
             if (Input.GetKey(KeyCode.A)) correcto = true;
             else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) Caida();
         }
         if (tecla == 2){
-            teclasTXT.text = ("Pulsa S");
             if (Input.GetKey(KeyCode.S)) correcto = true;
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D)) Caida();
         }
         if (tecla == 3){
-            teclasTXT.text = ("Pulsa D");
             if (Input.GetKey(KeyCode.D)) correcto = true;
             else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)) Caida();
         }
@@ -89,7 +89,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
 
     private void Acierto(){
         if (correcto){
-            teclasTXT.text = ("¡Has acertado!");
+            animPlayer.Play("Anim_Recto");
             transform.rotation = posicionInicial;
 
             //espera
@@ -107,12 +107,21 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
 
     public void Caida(){
         jugador.GetComponent<SCR_Puntos>().puntos -= 3;
-        teclasTXT.text = ("Has caído");
         transform.rotation = posicionInicial;
         enEspera = true;
     }
     private void Limites(){
         //límite
+        if (!enEspera);
+        if (direccion==1 && transform.eulerAngles.z < limiteAnim || direccion==-1 && transform.eulerAngles.z > 360-limiteAnim){
+            animPlayer.Play("Anim_Recto");
+        }
+        if (direccion==1 && transform.eulerAngles.z > limiteAnim){
+            animPlayer.Play("Anim_BalanceoIzq");
+        }
+        if (direccion==-1 && transform.eulerAngles.z < 360-limiteAnim){
+            animPlayer.Play("Anim_BalanceoDer");
+        }
         if (direccion==1 && transform.eulerAngles.z > limite || direccion==-1 && transform.eulerAngles.z < 360-limite){
             Caida();
         }
