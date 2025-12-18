@@ -4,11 +4,12 @@ using UnityEngine.UI;
 public class timer : MonoBehaviour
 {
     [Header("Configuración")]
-    public RectTransform lenguaRect; // Arrastramos aquí el RectTransform de la lengua
+    public RectTransform lenguaRect;
     public float tiempoTotal = 100f;
 
     private float anchoInicial;
     private float tiempoRestante;
+    private bool tiempoTerminado = false;
 
     public SCR_ColisionesPuntos sistemaPuntos;
     public SCR_MenuController menuController;
@@ -16,36 +17,30 @@ public class timer : MonoBehaviour
     void Start()
     {
         tiempoRestante = tiempoTotal;
-
-       
-        // sizeDelta.x es el ancho (width)
         anchoInicial = lenguaRect.sizeDelta.x;
     }
 
     void Update()
     {
-        //Debug.Log(tiempoRestante);
+        if (tiempoTerminado) return;
+
         if (tiempoRestante > 0)
         {
             tiempoRestante -= Time.deltaTime;
 
-            // Calculamos el porcentaje de 0 a 1
             float porcentaje = tiempoRestante / tiempoTotal;
-
-            // Calculamos el nuevo ancho basado en el porcentaje
             float nuevoAncho = anchoInicial * porcentaje;
 
-            // Aplicamos el nuevo ancho manteniendo la altura original (.y)
             lenguaRect.sizeDelta = new Vector2(nuevoAncho, lenguaRect.sizeDelta.y);
         }
         else
         {
-            Debug.Log("se acabo el tiempo");
-            // Al finalizar, ancho a 0
-            lenguaRect.sizeDelta = new Vector2(0, lenguaRect.sizeDelta.y);
-            menuController.LoadScene(4);
-            // Fin del juego...
+            tiempoTerminado = true;
 
+            Debug.Log("Se acabó el tiempo");
+            lenguaRect.sizeDelta = new Vector2(0, lenguaRect.sizeDelta.y);
+
+            menuController.LoadScene(4);
         }
     }
 }

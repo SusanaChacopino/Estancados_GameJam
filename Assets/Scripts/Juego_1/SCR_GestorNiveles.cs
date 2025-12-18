@@ -11,28 +11,52 @@ public class SCR_GestorNiveles : MonoBehaviour
     public string nombreSiguienteNivel = "Nivel2";
 
     [Header("Referencias")]
-    [Tooltip("Script que maneja los puntos")]
+    [Tooltip("Script que maneja los puntos (Nivel 1 y 2)")]
     public SCR_ColisionesPuntos scriptPuntos;
+
+    [Tooltip("Script de la rana interceptora (Nivel 3)")]
+    public SCR_RanaInterceptora ranaInterceptora; // ← NUEVO
 
     [Header("Información")]
     [SerializeField]
     [Tooltip("Solo para visualizar en el Inspector")]
     private bool nivelCompletado = false;
 
+    [SerializeField]
+    private int aciertosActuales = 0; // ← NUEVO
+
     void Start()
     {
-        // Buscar automáticamente el script de puntos si no está asignado
+        // Buscar script de puntos (Niveles 1 y 2)
         if (scriptPuntos == null)
         {
             scriptPuntos = FindFirstObjectByType<SCR_ColisionesPuntos>();
         }
 
-        if (scriptPuntos == null)
+        // Buscar rana interceptora (Nivel 3)
+        if (ranaInterceptora == null)
         {
-            Debug.LogError("[GestorNiveles] No se encontró SCR_ColisionesPuntos en la escena");
+            ranaInterceptora = FindFirstObjectByType<SCR_RanaInterceptora>();
+        }
+
+        // Suscribirse a eventos de la barra de ritmo si existe
+        if (ranaInterceptora != null && ranaInterceptora.scriptBarraRitmo != null)
+        {
+            ranaInterceptora.scriptBarraRitmo.OnAcierto.AddListener(ContarAcierto);
+            ranaInterceptora.scriptBarraRitmo.OnAciertoPerfecto.AddListener(ContarAcierto);
+            Debug.Log("[GestorNiveles] Modo Nivel 3 (Robos) activado");
+        }
+        else if (scriptPuntos != null)
+        {
+            Debug.Log("[GestorNiveles] Modo Niveles 1-2 (Puntos) activado");
+        }
+        else
+        {
+            Debug.LogWarning("[GestorNiveles] No se encontró sistema de puntos ni rana interceptora");
         }
 
         nivelCompletado = false;
+        aciertosActuales = 0;
     }
 
     void Update()
@@ -42,35 +66,42 @@ public class SCR_GestorNiveles : MonoBehaviour
 
     void VerificarVictoria()
     {
-        // Si ya completamos el nivel, no verificar más
         if (nivelCompletado) return;
 
-        // Si no hay script de puntos, no podemos verificar
-        if (scriptPuntos == null) return;
-
-        // Obtener puntos actuales
-        float puntosActuales = scriptPuntos.ObtenerPuntaje();
-
-        // ¿Llegó al límite?
-        if (puntosActuales >= puntosParaGanar)
+        // Sistema de puntos (Niveles 1 y 2)
+        if (scriptPuntos != null)
         {
-            NivelCompletado();
+            float puntosActuales = scriptPuntos.ObtenerPuntaje();
+            if (puntosActuales >= puntosParaGanar)
+            {
+                NivelCompletado();
+            }
         }
+        // Sistema de aciertos (Nivel 3)
+        else if (ranaInterceptora != null)
+        {
+            if (aciertosActuales >= puntosParaGanar)
+            {
+                NivelCompletado();
+            }
+        }
+    }
+
+    void ContarAcierto()
+    {
+        aciertosActuales++;
+        Debug.Log($"[GestorNiveles] Aciertos: {aciertosActuales}/{puntosParaGanar}");
     }
 
     void NivelCompletado()
     {
         nivelCompletado = true;
-
         Debug.Log($"[Nivel] ¡Completado! Pasando a {nombreSiguienteNivel}");
-
-        // Cargar siguiente nivel
         CargarSiguienteNivel();
     }
 
     void CargarSiguienteNivel()
     {
-        // Verificar que la escena existe
         if (Application.CanStreamedLevelBeLoaded(nombreSiguienteNivel))
         {
             SceneManager.LoadScene(nombreSiguienteNivel);
@@ -79,19 +110,26 @@ public class SCR_GestorNiveles : MonoBehaviour
         else
         {
             Debug.LogError($"[GestorNiveles] La escena '{nombreSiguienteNivel}' no existe o no está añadida al Build Settings");
-            Debug.Log("[GestorNiveles] Ve a File → Build Settings y añade la escena");
         }
     }
 
-    // Método público para cargar nivel manualmente (útil para botones)
     public void CargarNivelManual(string nombreNivel)
     {
         SceneManager.LoadScene(nombreNivel);
     }
 
-    // Método para reiniciar el nivel actual
     public void ReiniciarNivel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void OnDestroy()
+    {
+        // Desuscribirse de eventos
+        if (ranaInterceptora != null && ranaInterceptora.scriptBarraRitmo != null)
+        {
+            ranaInterceptora.scriptBarraRitmo.OnAcierto.RemoveListener(ContarAcierto);
+            ranaInterceptora.scriptBarraRitmo.OnAciertoPerfecto.RemoveListener(ContarAcierto);
+        }
     }
 }

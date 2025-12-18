@@ -10,6 +10,7 @@ public class SCR_TextosNivel1 : MonoBehaviour
     public SCR_ColisionesPuntos colisiones;
     public SCR_GestorNiveles gestionarNiv;
     public float puntuaje;
+
     void Start()
     {
         int meta = gestionarNiv.puntosParaGanar;
