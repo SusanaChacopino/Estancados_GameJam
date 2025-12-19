@@ -2393,6 +2393,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1743943715}
   m_CullTransparentMesh: 1
+--- !u!114 &2120494225 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1696858832058978206, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+  m_PrefabInstance: {fileID: 7610912895869259855}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2129619811
 GameObject:
   m_ObjectHideFlags: 0
@@ -2721,6 +2732,10 @@ PrefabInstance:
       propertyPath: TutorialBool
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3497758993396076318, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+      propertyPath: textoExplicacion
+      value: 
+      objectReference: {fileID: 2120494225}
     - target: {fileID: 7472864002318139929, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -2735,7 +2750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

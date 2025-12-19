@@ -484,13 +484,17 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 270
       objectReference: {fileID: 0}
+    - target: {fileID: 3497758993396076318, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+      propertyPath: textoExplicacion
+      value: 
+      objectReference: {fileID: 1582558265}
     - target: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
       propertyPath: m_Name
       value: "MenuExplicaci\xF3n"
       objectReference: {fileID: 0}
     - target: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2673,6 +2677,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: place holder text
       objectReference: {fileID: 0}
+    - target: {fileID: 2988717754773590079, guid: aa81d7891e1bf564a84f877eb1acb955, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3086943308663311576, guid: aa81d7891e1bf564a84f877eb1acb955, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4341,6 +4349,17 @@ Transform:
   - {fileID: 1275793201}
   m_Father: {fileID: 1371480595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1582558265 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1696858832058978206, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+  m_PrefabInstance: {fileID: 117766026}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1609005716
 GameObject:
   m_ObjectHideFlags: 0
