@@ -4,8 +4,11 @@ public class SCR_ColisionesPuntos : MonoBehaviour
 {
     [Header("puntos")]
     [SerializeField] private float puntaje;
+    [SerializeField] private AudioSource audioSource;
 
-    public AudioSource sonidoComer;
+    [SerializeField] private AudioClip sonidoComer;
+    [SerializeField] private AudioClip sonidoFrutaMala;
+
 
     [Header("Animacion")]
     public Animator animatorJugador;
@@ -13,7 +16,7 @@ public class SCR_ColisionesPuntos : MonoBehaviour
     void Start()
     {
         puntaje = 0;
-        sonidoComer = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -32,7 +35,8 @@ public class SCR_ColisionesPuntos : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log(puntaje);
             comioAlgo = true;
-            sonidoComer.Play();
+           // sonidoComer.Play();
+            audioSource.PlayOneShot(sonidoComer);
         }
 
         if (other.gameObject.CompareTag("2p"))
@@ -41,7 +45,8 @@ public class SCR_ColisionesPuntos : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log(puntaje);
             comioAlgo = true;
-            sonidoComer.Play();
+            // sonidoComer.Play();
+            audioSource.PlayOneShot(sonidoComer);
         }
 
         if (other.gameObject.CompareTag("fruta"))
@@ -50,7 +55,8 @@ public class SCR_ColisionesPuntos : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log(puntaje);
             comioAlgo=true;
-            sonidoComer.Play();
+            //sonidoFrutaMala.Play();
+            audioSource.PlayOneShot(sonidoFrutaMala);
         }
 
         if (comioAlgo&&animatorJugador!=null) 
