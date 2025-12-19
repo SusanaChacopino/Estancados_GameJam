@@ -22,10 +22,17 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
     private float tiempoCorrecto;
     public GameObject jugador;
 
+    //Sonidos
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip sonidoCaerse;
+
     void Start(){
         animPlayer = GetComponent<Animator>();
         Direccion();
         EleccionDeTecla();
+
+        //Sonidos
+        audioSource = GetComponent<AudioSource>();
 
         //caída
         limite = 40f;
@@ -52,7 +59,9 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
                 enEspera = false;
                 tiempoActual = 0f;
             }
+
         }
+
     }
 
     private void EleccionDeTecla(){
@@ -106,24 +115,33 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
     }
 
     public void Caida(){
+        if (enEspera) return;
         jugador.GetComponent<SCR_Puntos>().puntos -= 3;
         transform.rotation = posicionInicial;
         enEspera = true;
+        if (audioSource != null && sonidoCaerse != null)
+        {
+            audioSource.PlayOneShot(sonidoCaerse);
+        }
     }
     private void Limites(){
         //límite
         if (!enEspera);
+
         if (direccion==1 && transform.eulerAngles.z < limiteAnim || direccion==-1 && transform.eulerAngles.z > 360-limiteAnim){
             animPlayer.Play("Anim_Recto");
         }
         if (direccion==1 && transform.eulerAngles.z > limiteAnim){
             animPlayer.Play("Anim_BalanceoIzq");
+            
         }
         if (direccion==-1 && transform.eulerAngles.z < 360-limiteAnim){
             animPlayer.Play("Anim_BalanceoDer");
+            
         }
         if (direccion==1 && transform.eulerAngles.z > limite || direccion==-1 && transform.eulerAngles.z < 360-limite){
             Caida();
+            //audioSource.PlayOneShot(sonidoCaerse);
         }
     }
 }
