@@ -12,8 +12,8 @@ public class SCR_Explicacion : MonoBehaviour
     public VideoPlayer videoExplicacion;
 
     public VideoClip videoChuches;
-    //public VideoClip videoEquilibrio;
-    //public VideoClip videoRobar;
+    public VideoClip videoEquilibrio;
+    public VideoClip videoRobar;
 
     public Image teclaW;
     public Image teclaA;
@@ -63,7 +63,7 @@ public class SCR_Explicacion : MonoBehaviour
          switch (escena)
         {
             case "Juego chuches":
-                textoExplicacion.text = "�Engulle todas las chuches antes de que la rana termine de enrollar su enorme lengua! Pero OJO, si te tragas una fruta por accidente� �zas! �Tus puntos se escapan brincando!";
+                textoExplicacion.text = "¡Engulle todas las chuches antes de que la rana termine de enrollar su enorme lengua! Pero OJO, si te tragas una fruta por accidente! ¡zas! ¡Tus puntos se escapan brincando!";
                 videoExplicacion.clip = videoChuches;
                 teclaA.gameObject.SetActive(true);
                 teclaD.gameObject.SetActive(true);
@@ -72,8 +72,8 @@ public class SCR_Explicacion : MonoBehaviour
                 break;
 
             case "Juego equilibrio":
-                textoExplicacion.text = "Ey, rana mareada, �no te caigas! Mant�n tu caminito tambaleante pulsando las teclas justo a tiempo� antes de que la otra rana termine de enrollar su largu�sima lengua";
-                videoExplicacion.clip = videoChuches;
+                textoExplicacion.text = "Ey, rana mareada, ¡no te caigas! Mantén tu caminito tambaleante pulsando las teclas justo a tiempo, antes de que la otra rana termine de enrollar su larguísima lengua";
+                videoExplicacion.clip = videoEquilibrio;
                 teclaW.gameObject.SetActive(true);
                 teclaA.gameObject.SetActive(true);
                 teclaS.gameObject.SetActive(true);
@@ -81,8 +81,8 @@ public class SCR_Explicacion : MonoBehaviour
                 break;
 
             case "Juego robar":
-                textoExplicacion.text = "�Rana sigilosa al ataque! Acierta el momento justo en la barra de precisi�n y roba los objetos de las otras ranas sin que te vean� �y cuidado con la otra rana y su lengua que se enrolla sin parar!";
-                videoExplicacion.clip = videoChuches;
+                textoExplicacion.text = "¡Rana sigilosa al ataque! Acierta el momento justo en la barra de precisión y roba los objetos de las otras ranas sin que te vean ¡y cuidado con la otra rana y su lengua que se enrolla sin parar!";
+                videoExplicacion.clip = videoRobar;
                 teclaEspacio.gameObject.SetActive(true);
                 break;
 
