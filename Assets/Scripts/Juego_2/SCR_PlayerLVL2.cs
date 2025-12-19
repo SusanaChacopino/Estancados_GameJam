@@ -25,6 +25,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
     //Sonidos
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip sonidoCaerse;
+    [SerializeField] private AudioClip sonidoTecla;
 
     void Start(){
         animPlayer = GetComponent<Animator>();
@@ -75,24 +76,53 @@ public class SCR_PlayerLVL2 : MonoBehaviour{
     }
 
     private void Balanceo(){
+       
         float grados = fuerzaGiro * Time.deltaTime;
         transform.Rotate(0f, 0f, grados * direccion, Space.World);
         //Teclas
         if (tecla == 0){
-            if (Input.GetKey(KeyCode.W)) correcto = true;
-            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) Caida();
-        }
+        
+            if (Input.GetKeyDown(KeyCode.W))
+            { 
+                correcto = true;
+                audioSource.PlayOneShot(sonidoTecla);
+            }
+              else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)) Caida();
+           
+
+         }
         if (tecla == 1){
-            if (Input.GetKey(KeyCode.A)) correcto = true;
-            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) Caida();
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                correcto = true;
+                audioSource.PlayOneShot(sonidoTecla);
+
+            }
+            else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D)) Caida();
+           
+
         }
         if (tecla == 2){
-            if (Input.GetKey(KeyCode.S)) correcto = true;
-            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D)) Caida();
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                correcto = true;
+                audioSource.PlayOneShot(sonidoTecla);
+            }
+               
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D)) Caida();
+            
+
         }
         if (tecla == 3){
-            if (Input.GetKey(KeyCode.D)) correcto = true;
-            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.W)) Caida();
+            if (Input.GetKeyDown(KeyCode.D))
+            {  
+                correcto = true;
+                audioSource.PlayOneShot(sonidoTecla);
+            }
+               
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.W)) Caida();
+           
+
         }
     }
 

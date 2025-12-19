@@ -1401,6 +1401,7 @@ MonoBehaviour:
   jugador: {fileID: 1251727395}
   audioSource: {fileID: 1251727401}
   sonidoCaerse: {fileID: 8300000, guid: ec106c6b5c2fdac4aab6e0bf13b346de, type: 3}
+  sonidoTecla: {fileID: 8300000, guid: b3bda18843cdf9d4c989333806938637, type: 3}
 --- !u!114 &1251727399
 MonoBehaviour:
   m_ObjectHideFlags: 0

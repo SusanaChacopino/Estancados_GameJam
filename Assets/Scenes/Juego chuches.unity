@@ -2015,7 +2015,7 @@ MonoBehaviour:
   puntaje: 0
   audioSource: {fileID: 1658173767}
   sonidoComer: {fileID: 8300000, guid: 317c415362793b346b7137799ebea0e4, type: 3}
-  sonidoFrutaMala: {fileID: 8300000, guid: 709c76a8af08a1c4e9787c3442ef7077, type: 3}
+  sonidoFrutaMala: {fileID: 8300000, guid: 52e7925d9e58563499feab86fece257c, type: 3}
   animatorJugador: {fileID: 390332103}
 --- !u!61 &1658173766
 BoxCollider2D:
@@ -2171,7 +2171,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 709c76a8af08a1c4e9787c3442ef7077, type: 3}
+  m_Resource: {fileID: 8300000, guid: 52e7925d9e58563499feab86fece257c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

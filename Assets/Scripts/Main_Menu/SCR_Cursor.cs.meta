@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 4ffaae25c1dd2b441add4d1c54b9ac85
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - cursor_normal: {instanceID: 0}
+  - cursor_OnButton: {instanceID: 0}
+  - sonidoHover: {fileID: 8300000, guid: 26963e876f85e22448cf954e26871678, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
