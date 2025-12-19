@@ -3,107 +3,91 @@ using UnityEngine.SceneManagement;
 
 public class SCR_MenuController : MonoBehaviour
 {
+    int NextLvl, PastLvl;
 
-
-    int NextLvl, PastLvl, CurrentLvl;
-    bool Paused = false, SkipHints = false;
     public GameObject PauseMenu, GameUI, Ajustes;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        // NO hacer nada aquí para no interferir
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void LoadRandomScene() 
+    public void LoadRandomScene()
     {
-        NextLvl = Random.Range(1, 3);
+        NextLvl = Random.Range(1, 4);
+
         if (NextLvl == PastLvl)
         {
-            NextLvl = Random.Range(1, 3);
+            NextLvl = Random.Range(1, 4);
         }
-        else
-        {
-            PastLvl = NextLvl;
-            LoadScene(NextLvl);
-        }
+
+        PastLvl = NextLvl;
+        LoadScene(NextLvl);
     }
+
     public void LoadScene(int Level)
     {
         if (Level == 0)
         {
-            //Inicio
+            //Inicio - Resetear al volver al menú
+            PlayerPrefs.SetInt("ModoFrenesi", 0);
+            PlayerPrefs.Save();
             SceneManager.LoadScene(0);
         }
         if (Level == 1)
         {
             //Chuches
-            CurrentLvl = 1;
             SceneManager.LoadScene(1);
-            LoadExplicacion(1);
         }
         if (Level == 2)
         {
             //Equilibrio
-            CurrentLvl = 2;
             SceneManager.LoadScene(2);
-            LoadExplicacion(2);
         }
         if (Level == 3)
         {
             //Robar
-            CurrentLvl = 3;
             SceneManager.LoadScene(3);
-            LoadExplicacion(3);
         }
-        if(Level == 4) 
+        if (Level == 4)
         {
             //Menú final
+            PlayerPrefs.SetInt("ModoFrenesi", 0);
+            PlayerPrefs.Save();
             SceneManager.LoadScene(4);
-            //Application.Quit();
         }
-
-
     }
 
-    public void LoadExplicacion(int Explicacion)
-    {
-        if (SkipHints == false) 
-        {
-            if (Explicacion == 1)
-                Debug.Log("EXP_1");
-            if (Explicacion == 2)
-                Debug.Log("EXP_2");
-            if (Explicacion == 3)
-                Debug.Log("EXP_3");
-        }
-
-
-
-
-    }
-
-    public void Load(int ButtonPressed) 
+    public void Load(int ButtonPressed)
     {
         if (ButtonPressed == 0)
         {
             //Menú inicio (Restart)
+            PlayerPrefs.SetInt("ModoFrenesi", 0);
+            PlayerPrefs.Save();
             LoadScene(0);
         }
         if (ButtonPressed == 1)
         {
-            //Historia
+            //Historia - CON tutoriales
+            Debug.Log("[MENU] Historia: Guardando ModoFrenesi = 0");
+            PlayerPrefs.SetInt("ModoFrenesi", 0);
+            PlayerPrefs.Save();
+            Debug.Log("[MENU] Verificando: " + PlayerPrefs.GetInt("ModoFrenesi"));
             LoadScene(1);
         }
         if (ButtonPressed == 2)
         {
-            //Frenesis
+            //Frenesí - SIN tutoriales
+            Debug.Log("[MENU] Frenesi: Guardando ModoFrenesi = 1");
+            PlayerPrefs.SetInt("ModoFrenesi", 1);
+            PlayerPrefs.Save();
+            Debug.Log("[MENU] Verificando: " + PlayerPrefs.GetInt("ModoFrenesi"));
             LoadRandomScene();
         }
         if (ButtonPressed == 3)
@@ -114,16 +98,18 @@ public class SCR_MenuController : MonoBehaviour
         if (ButtonPressed == 4)
         {
             //Exit
+            Application.Quit();
             Debug.Log("Exit");
         }
         if (ButtonPressed == 5)
         {
-            Paused = true;
+           
             Pause();
         }
         if (ButtonPressed == 6)
         {
-            Paused = false;
+     
+            Resume();
         }
     }
 
@@ -150,5 +136,4 @@ public class SCR_MenuController : MonoBehaviour
         GameObject AjustesToDestroy = GameObject.Find("Ajustes(Clone)");
         Destroy(AjustesToDestroy);
     }
-
 }

@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SCR_TextosNivel1 : MonoBehaviour
@@ -17,7 +16,6 @@ public class SCR_TextosNivel1 : MonoBehaviour
         textoPuntosParaGanar.text = meta.ToString();
     }
 
-    // Update is called once per frame
     void Update()
     {
         puntuaje = colisiones.ObtenerPuntaje();

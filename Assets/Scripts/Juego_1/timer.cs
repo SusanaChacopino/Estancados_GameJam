@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class timer : MonoBehaviour
+public class Timer : MonoBehaviour
 {
     [Header("Configuración")]
     public RectTransform lenguaRect;
-    public float tiempoTotal = 100f;
+    public float tiempoTotal = 100f; // Tiempo inicial del temporizador
 
     private float anchoInicial;
     private float tiempoRestante;
@@ -16,17 +16,14 @@ public class timer : MonoBehaviour
 
     void Start()
     {
+        // Reducir tiempo según rachas ganadas (cada 3 juegos ganados = mitad del tiempo)
         if (SCR_RachaTiempo.instance != null)
         {
-        int juegos = SCR_RachaTiempo.instance.juegosGanados;
-
-        //Divide los juegosGanados entre 3 y guarda solo el numero entero ejemp. 1/3 = 0
-        int reducciones = juegos / 3;
-
-        // Reduce el tiempo a la mitad multiplicando el numero de rachas siempre elevado por 2
-        tiempoTotal = tiempoTotal /= Mathf.Pow(2, reducciones);
-
+            int juegos = SCR_RachaTiempo.instance.juegosGanados;
+            int reducciones = juegos / 3;
+            tiempoTotal = tiempoTotal / Mathf.Pow(2, reducciones);
         }
+
         tiempoRestante = tiempoTotal;
         anchoInicial = lenguaRect.sizeDelta.x;
     }
@@ -39,18 +36,16 @@ public class timer : MonoBehaviour
         {
             tiempoRestante -= Time.deltaTime;
 
+            // Actualizar ancho de la barra
             float porcentaje = tiempoRestante / tiempoTotal;
             float nuevoAncho = anchoInicial * porcentaje;
-
             lenguaRect.sizeDelta = new Vector2(nuevoAncho, lenguaRect.sizeDelta.y);
         }
         else
         {
+            // Tiempo agotado
             tiempoTerminado = true;
-
-            Debug.Log("Se acabó el tiempo");
             lenguaRect.sizeDelta = new Vector2(0, lenguaRect.sizeDelta.y);
-
             menuController.LoadScene(4);
         }
     }

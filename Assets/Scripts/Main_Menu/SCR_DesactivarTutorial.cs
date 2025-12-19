@@ -9,7 +9,7 @@ public class SCR_DesactivarTutorial : MonoBehaviour
     {
         tutorialesActivos = PlayerPrefs.GetInt("TutorialesActivos", 1) == 1;
         tickSprite.SetActive(tutorialesActivos);
-        tutorialesActivos = true;
+
     }
 
     public void DesactivarTutoriales()

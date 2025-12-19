@@ -4,55 +4,38 @@ using UnityEngine.SceneManagement;
 public class SCR_GestorNiveles : MonoBehaviour
 {
     [Header("Configuración del Nivel")]
-    [Tooltip("Puntos necesarios para pasar al siguiente nivel")]
-    public int puntosParaGanar = 20;
+    public int puntosParaGanar = 20; // Meta para completar nivel
 
     [Tooltip("Nombre de la escena del siguiente nivel")]
     public string nombreSiguienteNivel = "Nivel2";
 
     [Header("Referencias")]
-    [Tooltip("Script que maneja los puntos (Nivel 1 y 2)")]
-    public SCR_ColisionesPuntos scriptPuntos;
-
-    [Tooltip("Script de la rana interceptora (Nivel 3)")]
-    public SCR_RanaInterceptora ranaInterceptora; // ← NUEVO
+    public SCR_ColisionesPuntos scriptPuntos; // Para niveles 1 y 2
+    public SCR_RanaInterceptora ranaInterceptora; // Para nivel 3
 
     [Header("Información")]
-    [SerializeField]
-    [Tooltip("Solo para visualizar en el Inspector")]
-    private bool nivelCompletado = false;
-
-    [SerializeField]
-    private int aciertosActuales = 0; // ← NUEVO
+    [SerializeField] private bool nivelCompletado = false;
+    [SerializeField] private int aciertosActuales = 0;
 
     void Start()
     {
-        // Buscar script de puntos (Niveles 1 y 2)
+        // Buscar sistema de puntos (si no está asignado)
         if (scriptPuntos == null)
         {
             scriptPuntos = FindFirstObjectByType<SCR_ColisionesPuntos>();
         }
 
-        // Buscar rana interceptora (Nivel 3)
+        // Buscar rana interceptora para nivel 3
         if (ranaInterceptora == null)
         {
             ranaInterceptora = FindFirstObjectByType<SCR_RanaInterceptora>();
         }
 
-        // Suscribirse a eventos de la barra de ritmo si existe
+        // Suscribirse a eventos de la barra de ritmo (nivel 3)
         if (ranaInterceptora != null && ranaInterceptora.scriptBarraRitmo != null)
         {
             ranaInterceptora.scriptBarraRitmo.OnAcierto.AddListener(ContarAcierto);
             ranaInterceptora.scriptBarraRitmo.OnAciertoPerfecto.AddListener(ContarAcierto);
-            Debug.Log("[GestorNiveles] Modo Nivel 3 (Robos) activado");
-        }
-        else if (scriptPuntos != null)
-        {
-            Debug.Log("[GestorNiveles] Modo Niveles 1-2 (Puntos) activado");
-        }
-        else
-        {
-            Debug.LogWarning("[GestorNiveles] No se encontró sistema de puntos ni rana interceptora");
         }
 
         nivelCompletado = false;
@@ -68,7 +51,7 @@ public class SCR_GestorNiveles : MonoBehaviour
     {
         if (nivelCompletado) return;
 
-        // Sistema de puntos (Niveles 1 y 2)
+        // Sistema de puntos (niveles 1 y 2)
         if (scriptPuntos != null)
         {
             float puntosActuales = scriptPuntos.ObtenerPuntaje();
@@ -77,7 +60,7 @@ public class SCR_GestorNiveles : MonoBehaviour
                 NivelCompletado();
             }
         }
-        // Sistema de aciertos (Nivel 3)
+        // Sistema de aciertos (nivel 3)
         else if (ranaInterceptora != null)
         {
             if (aciertosActuales >= puntosParaGanar)
@@ -90,13 +73,11 @@ public class SCR_GestorNiveles : MonoBehaviour
     void ContarAcierto()
     {
         aciertosActuales++;
-        Debug.Log($"[GestorNiveles] Aciertos: {aciertosActuales}/{puntosParaGanar}");
     }
 
     void NivelCompletado()
     {
         nivelCompletado = true;
-        Debug.Log($"[Nivel] ¡Completado! Pasando a {nombreSiguienteNivel}");
         CargarSiguienteNivel();
     }
 
@@ -106,10 +87,6 @@ public class SCR_GestorNiveles : MonoBehaviour
         {
             SceneManager.LoadScene(nombreSiguienteNivel);
             SCR_RachaTiempo.instance.SumarVictoria();
-        }
-        else
-        {
-            Debug.LogError($"[GestorNiveles] La escena '{nombreSiguienteNivel}' no existe o no está añadida al Build Settings");
         }
     }
 

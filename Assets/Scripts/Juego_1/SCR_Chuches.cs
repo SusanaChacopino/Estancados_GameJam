@@ -9,16 +9,18 @@ public class SCR_Chuches : MonoBehaviour
     public GameObject fruta;
 
     [Header("Parametros")]
-    public float frecuenciaInicial;
-    public float frecuenciaMinima;
-    public float tiempoParaAcelerar;
+    public float frecuenciaInicial; // Segundos entre spawns al inicio
+    public float frecuenciaMinima;  // Frecuencia más rápida posible
+    public float tiempoParaAcelerar; // Cada cuánto acelera el spawn
     [Range(0.01f, 0.2f)]
-    public float porcentajeReduccion;
+    public float porcentajeReduccion; // Cuánto acelera cada vez
 
     [Tooltip("Margen desde el borde de la pantalla")]
     public float margenX;
-    [Tooltip("Altura de spawn relativa a la cámara (0 = centro, valores positivos = arriba)")]
+    [Tooltip("Altura de spawn relativa a la cámara")]
     public float offsetSpawnAltura;
+
+    // Probabilidades (deben sumar <= 100)
     [Range(0f, 100f)]
     public float chuche1Percent;
     [Range(0f, 100f)]
@@ -28,10 +30,9 @@ public class SCR_Chuches : MonoBehaviour
     public float velocidadCaidaInicial;
     public float velocidadCaidaMax;
     public float tiempoParaAceleracionCaida;
-    [Range(0.01f,0.2f)]
+    [Range(0.01f, 0.2f)]
     public float porcentajeAumento;
 
-    //----privado----//
     private Camera camaraPrincipal;
     private float minHorizontal;
     private float maxHorizontal;
@@ -40,10 +41,10 @@ public class SCR_Chuches : MonoBehaviour
     private float tiempoTranscurrido;
     private float siguienteAceleracion;
     private float siguienteAceleracionCaida;
+
     void Start()
     {
         camaraPrincipal = Camera.main;
-
         CalcularLimitesSpawn();
 
         frecuenciaActual = frecuenciaInicial;
@@ -55,118 +56,90 @@ public class SCR_Chuches : MonoBehaviour
         StartCoroutine(SpawnearFrutasCoroutine());
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //Debug.Log(tiempoTranscurrido);
         TimerSpawn();
     }
 
     IEnumerator SpawnearFrutasCoroutine()
     {
-        while (true)  // Loop infinito
+        while (true)
         {
-            // Esperar el tiempo de la frecuencia actual
             yield return new WaitForSeconds(frecuenciaActual);
-
-            // Spawnear fruta
             SpawnFruta();
         }
     }
 
-    void SpawnFruta() 
+    void SpawnFruta()
     {
         float x = Random.Range(minHorizontal, maxHorizontal);
         Vector3 pos = new Vector3(x, spawnAltura, -0.5f);
 
+        // Elegir fruta según probabilidades
         float r = Random.value * 100f;
-
         GameObject frutaElegida;
 
         if (r < frutaPercent)
         {
             frutaElegida = fruta;
         }
-
         else if (frutaPercent < r && r < chuche1Percent)
         {
-            frutaElegida = chuche1; 
+            frutaElegida = chuche1;
         }
-
-        else 
+        else
         {
-            frutaElegida= chuche2;
+            frutaElegida = chuche2;
         }
 
-        Instantiate(frutaElegida,pos,Quaternion.identity);
+        Instantiate(frutaElegida, pos, Quaternion.identity);
     }
 
     void CalcularLimitesSpawn()
     {
-        if (camaraPrincipal == null)
-        {
-            return;
-        }
+        if (camaraPrincipal == null) return;
 
-        //obtener los limites de la camara
         float alturaCamara = camaraPrincipal.orthographicSize;
         float anchoCamara = alturaCamara * camaraPrincipal.aspect;
 
-        //Calculo de las margenes en X
         minHorizontal = camaraPrincipal.transform.position.x - anchoCamara + margenX;
         maxHorizontal = camaraPrincipal.transform.position.x + anchoCamara - margenX;
-
-        //Calculo de la altura del Spawn (justo arriba del margen Y)
         spawnAltura = camaraPrincipal.transform.position.y + alturaCamara + offsetSpawnAltura;
-
     }
 
     void TimerSpawn()
     {
-        //tiempo transcurrido
         tiempoTranscurrido += Time.deltaTime;
 
-        //verificador de acelerecion
-        if (tiempoTranscurrido>=siguienteAceleracion)
+        if (tiempoTranscurrido >= siguienteAceleracion)
         {
             AcelerarSpawn();
+            siguienteAceleracion += tiempoParaAcelerar;
         }
 
-        if (tiempoTranscurrido>=siguienteAceleracionCaida)
+        if (tiempoTranscurrido >= siguienteAceleracionCaida)
         {
             AcelerarVelocidadCaida();
             siguienteAceleracionCaida += tiempoParaAceleracionCaida;
         }
     }
-    
+
     void AcelerarSpawn()
     {
         float reduccion = frecuenciaActual * porcentajeReduccion;
+        float nuevaFrecuencia = frecuenciaActual - reduccion;
 
-        float nuevaFrecuencia =  frecuenciaActual-reduccion;
-
-        //reduccion de frecuencia hasta el minimo
         if (nuevaFrecuencia < frecuenciaMinima)
         {
             nuevaFrecuencia = frecuenciaMinima;
         }
 
-        if (nuevaFrecuencia != frecuenciaActual)
-        {
-            float objetosPorMinutoAntes = 60f / frecuenciaActual;
-            float objetosPorMinutoDespues = 60f / nuevaFrecuencia;
-
-            frecuenciaActual = nuevaFrecuencia;
-        }
-
-
+        frecuenciaActual = nuevaFrecuencia;
     }
 
     void AcelerarVelocidadCaida()
     {
         float aumento = SCR_FrutasCaida.velocidadGlobal * porcentajeAumento;
-
-        // Aumentar velocidad (pero no más que el máximo)
         float nuevaVelocidad = SCR_FrutasCaida.velocidadGlobal + aumento;
 
         if (nuevaVelocidad > velocidadCaidaMax)
@@ -174,12 +147,6 @@ public class SCR_Chuches : MonoBehaviour
             nuevaVelocidad = velocidadCaidaMax;
         }
 
-        // Solo actualizar si cambió
-        if (nuevaVelocidad != SCR_FrutasCaida.velocidadGlobal)
-        {
-            float velocidadAnterior = SCR_FrutasCaida.velocidadGlobal;
-            SCR_FrutasCaida.velocidadGlobal = nuevaVelocidad;
-
-        }
+        SCR_FrutasCaida.velocidadGlobal = nuevaVelocidad;
     }
 }

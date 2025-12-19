@@ -6,15 +6,18 @@ using UnityEngine.UI;
 
 public class SCR_Explicacion : MonoBehaviour
 {
+    [Header("Activar/Desactivar Tutoriales")]
     public SCR_DesactivarTutorial TutorialBool;
 
-    public TextMeshProUGUI textoExplicacion;
+    [Header("VideoTutoriales")]
     public VideoPlayer videoExplicacion;
+    public TextMeshProUGUI textoExplicacion;
 
     public VideoClip videoChuches;
     public VideoClip videoEquilibrio;
     public VideoClip videoRobar;
 
+    [Header("Imagenes Teclas")]
     public Image teclaW;
     public Image teclaA;
     public Image teclaS;
@@ -25,18 +28,50 @@ public class SCR_Explicacion : MonoBehaviour
     public Image teclaFlechaDerecha;
     public Image teclaEspacio;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private bool yaEjecute = false;
+
+    void Update()
     {
+        // Ejecutar solo una vez en el primer frame (más confiable que Start)
+        if (!yaEjecute)
+        {
+            yaEjecute = true;
+            VerificarYMostrarTutorial();
+        }
+    }
+
+    void VerificarYMostrarTutorial()
+    {
+        // Verificar modo Frenesí (sin tutoriales)
+        bool modoFrenesi = PlayerPrefs.GetInt("ModoFrenesi", 0) == 1;
+
+        if (modoFrenesi)
+        {
+            gameObject.SetActive(false);
+            Time.timeScale = 1;
+            return;
+        }
+
+        // Verificar si usuario desactivó tutoriales
         bool tutorialesActivos = PlayerPrefs.GetInt("TutorialesActivos", 1) == 1;
-        gameObject.SetActive(tutorialesActivos);
 
-        /*if (!TutorialBool.tutorialesActivos)
-            Time.timeScale = 0;
-        */
+        if (!tutorialesActivos)
+        {
+            gameObject.SetActive(false);
+            Time.timeScale = 1;
+            return;
+        }
 
+        // Mostrar tutorial
+        gameObject.SetActive(true);
         Time.timeScale = 0;
 
+        OcultarTodasLasTeclas();
+        TextosExplicacionEscena();
+    }
+
+    private void OcultarTodasLasTeclas()
+    {
         teclaW.gameObject.SetActive(false);
         teclaA.gameObject.SetActive(false);
         teclaS.gameObject.SetActive(false);
@@ -46,21 +81,14 @@ public class SCR_Explicacion : MonoBehaviour
         teclaFlechaIzquierda.gameObject.SetActive(false);
         teclaFlechaDerecha.gameObject.SetActive(false);
         teclaEspacio.gameObject.SetActive(false);
-
-        TextosExplicacionEscena();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void TextosExplicacionEscena()
     {
+        // IMPORTANTE: Los nombres de las escenas deben coincidir exactamente
         string escena = SceneManager.GetActiveScene().name;
 
-         switch (escena)
+        switch (escena)
         {
             case "Juego chuches":
                 textoExplicacion.text = "¡Engulle todas las chuches antes de que la rana termine de enrollar su enorme lengua! Pero OJO, si te tragas una fruta por accidente! ¡zas! ¡Tus puntos se escapan brincando!";
@@ -87,7 +115,7 @@ public class SCR_Explicacion : MonoBehaviour
                 break;
 
             default:
-                textoExplicacion.text = "no hay explicaci�n";
+                textoExplicacion.text = "no hay explicación";
                 break;
         }
 
