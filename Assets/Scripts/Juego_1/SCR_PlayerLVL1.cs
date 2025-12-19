@@ -10,6 +10,7 @@ public class SCR_PlayerLVL1 : MonoBehaviour
 
     [Header("Referencias")]
     public Rigidbody2D rb;
+    public GameObject tutorial;
 
     private float margenPantalla=0.5f;    
     private Vector2 moverDireccion;
@@ -21,6 +22,10 @@ public class SCR_PlayerLVL1 : MonoBehaviour
         camaraPrincipal = Camera.main;
 
         CalcularLimitesPantalla();
+
+        if (tutorial.activeSelf == false){
+            Time.timeScale = 1;
+        }
         
     }
 

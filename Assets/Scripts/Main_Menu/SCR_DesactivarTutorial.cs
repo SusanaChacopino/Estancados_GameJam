@@ -14,7 +14,6 @@ public class SCR_DesactivarTutorial : MonoBehaviour
 
     public void DesactivarTutoriales()
     {
-
         tutorialesActivos = !tutorialesActivos;
         tickSprite.SetActive(tutorialesActivos);
 

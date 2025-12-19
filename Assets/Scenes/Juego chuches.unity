@@ -1993,6 +1993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidad: 15
   rb: {fileID: 1658173764}
+  tutorial: {fileID: 7610912895869259856}
 --- !u!50 &1658173764
 Rigidbody2D:
   serializedVersion: 5
@@ -2755,13 +2756,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+--- !u!1 &7610912895869259856 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8494571225792505237, guid: f65045a2cb49f814a86a7637236795a3, type: 3}
+  m_PrefabInstance: {fileID: 7610912895869259855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
