@@ -4,13 +4,15 @@ using UnityEngine.SceneManagement;
 public class SCR_GestorNiveles : MonoBehaviour
 {
     [Header("Configuración del Nivel")]
-    public int puntosParaGanar = 20; // Meta para completar nivel
+    public int puntosParaGanar = 20; // Meta para completar nivel 1
+    public float puntosParaGanarLVL2 = 20f; // Meta para completar nivel 2
 
     [Tooltip("Nombre de la escena del siguiente nivel")]
     public string nombreSiguienteNivel = "Nivel2";
 
     [Header("Referencias")]
-    public SCR_ColisionesPuntos scriptPuntos; // Para niveles 1 y 2
+    public SCR_ColisionesPuntos scriptPuntos; // Para nivel 1
+    public SCR_Puntos scriptPuntosLVL2; // Para nivel 2
     public SCR_RanaInterceptora ranaInterceptora; // Para nivel 3
 
     [Header("Información")]
@@ -23,6 +25,11 @@ public class SCR_GestorNiveles : MonoBehaviour
         if (scriptPuntos == null)
         {
             scriptPuntos = FindFirstObjectByType<SCR_ColisionesPuntos>();
+        }
+
+        if (scriptPuntosLVL2 == null)
+        {
+            scriptPuntosLVL2 = FindFirstObjectByType<SCR_Puntos>();
         }
 
         // Buscar rana interceptora para nivel 3
@@ -51,7 +58,7 @@ public class SCR_GestorNiveles : MonoBehaviour
     {
         if (nivelCompletado) return;
 
-        // Sistema de puntos (niveles 1 y 2)
+        // Sistema de puntos (nivel 1)
         if (scriptPuntos != null)
         {
             float puntosActuales = scriptPuntos.ObtenerPuntaje();
@@ -60,6 +67,15 @@ public class SCR_GestorNiveles : MonoBehaviour
                 NivelCompletado();
             }
         }
+
+        // Sistema de puntos (nivel 2)
+        else if (scriptPuntosLVL2 != null){
+            float puntosActuales = scriptPuntosLVL2.ObtenerPuntaje();
+            if (puntosActuales >= puntosParaGanarLVL2){
+                NivelCompletado();
+            }
+        }
+
         // Sistema de aciertos (nivel 3)
         else if (ranaInterceptora != null)
         {

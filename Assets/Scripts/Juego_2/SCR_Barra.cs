@@ -21,6 +21,7 @@ public class SCR_Barra : MonoBehaviour
     {
         //Convierte los puntos en un valor entre 0 y 1 dependiendo del maximo
         float ValorPuntos = Mathf.Clamp01(puntos.puntos / puntosMax);
+        //Debug.Log(ValorPuntos);
 
         //mover el sprite de la Rana
         Vector2 pos = spriteRana.anchoredPosition;
