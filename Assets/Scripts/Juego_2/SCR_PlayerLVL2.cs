@@ -20,7 +20,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour
     [Header("Tecla Correcta")]
     public bool correcto = false;
     private float tiempoCorrecto;
-    private bool volviendoACero = false; // Nuevo: está volviendo a 0°
+    private bool volviendoACero = false; 
     public GameObject jugador;
 
     [Header("Sonidos")]
@@ -39,6 +39,8 @@ public class SCR_PlayerLVL2 : MonoBehaviour
         limite = 40f;
         limiteAnim = 5f;
         posicionInicial = transform.rotation;
+
+        AjustarDificultadPorVictorias();
     }
 
     void Update()
@@ -52,7 +54,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour
             }
             else
             {
-                VolverACero(); // Nuevo: volver a 0° con impulso
+                VolverACero();
             }
 
             Acierto();
@@ -143,13 +145,12 @@ public class SCR_PlayerLVL2 : MonoBehaviour
         {
             animPlayer.Play("Anim_Recto");
 
-            // En lugar de teleport, activar modo "volver a cero"
             volviendoACero = true;
             direccion = 0;
         }
     }
 
-    // NUEVO: Volver a 0° con impulso suave
+    //Vuelve a 0° con impulso suave
     private void VolverACero()
     {
         float anguloActual = transform.eulerAngles.z;
@@ -165,7 +166,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour
             volviendoACero = false;
             correcto = false;
 
-            // Esperar un momento antes de empezar nuevo balanceo
+
             tiempoCorrecto = Random.Range(0.5f, 2f);
             tiempoActual = 0f;
 
@@ -175,7 +176,6 @@ public class SCR_PlayerLVL2 : MonoBehaviour
         }
         else
         {
-            // Rotar hacia 0° (dirección opuesta al ángulo actual)
             int direccionVuelta = anguloActual > 0 ? -1 : 1;
             float velocidadVuelta = fuerzaImpulso * Time.deltaTime;
             transform.Rotate(0f, 0f, velocidadVuelta * direccionVuelta, Space.World);
@@ -187,7 +187,7 @@ public class SCR_PlayerLVL2 : MonoBehaviour
         if (enEspera) return;
 
         jugador.GetComponent<SCR_Puntos>().puntos -= 3;
-        transform.rotation = posicionInicial; // Al caer sí puede teleportarse
+        transform.rotation = posicionInicial; // Al caer si vuelve a la posicion inicial
         enEspera = true;
 
         if (audioSource != null && sonidoCaerse != null)
@@ -222,5 +222,21 @@ public class SCR_PlayerLVL2 : MonoBehaviour
                 Caida();
             }
         }
+    }
+
+    void AjustarDificultadPorVictorias()
+    {
+        if (SCR_RachaTiempo.instance == null) return;
+
+        int victorias = SCR_RachaTiempo.instance.juegosGanados;
+
+        // Cada victoria aumenta velocidad de balanceo
+        float multiplicador = 1f + (victorias * 0.2f); // +20% por victoria
+        multiplicador = Mathf.Min(multiplicador, 2.5f); // Máximo 2.5x
+
+        fuerzaGiro *= multiplicador;
+        fuerzaImpulso *= multiplicador;
+
+        //Debug.Log($"[Nivel2] Dificultad ajustada. Victorias: {victorias}, Multiplicador: {multiplicador:F2}");
     }
 }

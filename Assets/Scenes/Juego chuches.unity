@@ -127,6 +127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 557095848}
     m_Modifications:
+    - target: {fileID: 3271197831772293912, guid: 3faedc0eb42247f4baa955b975b63988, type: 3}
+      propertyPath: menuController
+      value: 
+      objectReference: {fileID: 1473236765}
+    - target: {fileID: 3475209789332567461, guid: 3faedc0eb42247f4baa955b975b63988, type: 3}
+      propertyPath: tiempoTotal
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3475209789332567461, guid: 3faedc0eb42247f4baa955b975b63988, type: 3}
       propertyPath: sistemaPuntos
       value: 
@@ -261,8 +269,8 @@ MonoBehaviour:
   chuche1: {fileID: 8281019848290985527, guid: 78102dfef0ae7df42a0e3b7acd6abff6, type: 3}
   chuche2: {fileID: 5410193082490703801, guid: 041ba9fc34291f54380282e6b2b9dd16, type: 3}
   fruta: {fileID: 8586575423423472466, guid: 3030c0ec6c9820b43b02430023e17469, type: 3}
-  frecuenciaInicial: 2
-  frecuenciaMinima: 0.4
+  frecuenciaInicial: 1.5
+  frecuenciaMinima: 0.2
   tiempoParaAcelerar: 5
   porcentajeReduccion: 0.05
   margenX: 0.5

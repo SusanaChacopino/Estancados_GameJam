@@ -5186,14 +5186,14 @@ MonoBehaviour:
   scriptBarraRitmo: {fileID: 714245135}
   intentosMaximos: 3
   distanciaMaximaFrame: 5
+  sonidoAcierto: {fileID: 8300000, guid: ce5234d5eb890164585da87714b87c4d, type: 3}
+  sonidoFallo: {fileID: 8300000, guid: d06d4f5df32d1284b8b60969204927dd, type: 3}
   persiguiendoObjetivo: 0
   esperandoMinijuego: 0
   siguiendoPersonaje: 0
   ralentizacionActiva: 0
   enCooldown: 0
   intentosRestantes: 0
-  sonidoAcierto: {fileID: 8300000, guid: ce5234d5eb890164585da87714b87c4d, type: 3}
-  sonidoFallo: {fileID: 8300000, guid: d06d4f5df32d1284b8b60969204927dd, type: 3}
 --- !u!50 &2031431957
 Rigidbody2D:
   serializedVersion: 5

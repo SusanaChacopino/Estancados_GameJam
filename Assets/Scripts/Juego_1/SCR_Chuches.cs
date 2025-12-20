@@ -15,12 +15,10 @@ public class SCR_Chuches : MonoBehaviour
     [Range(0.01f, 0.2f)]
     public float porcentajeReduccion; // Cuánto acelera cada vez
 
-    [Tooltip("Margen desde el borde de la pantalla")]
     public float margenX;
-    [Tooltip("Altura de spawn relativa a la cámara")]
     public float offsetSpawnAltura;
 
-    // Probabilidades (deben sumar <= 100)
+    [Header("Probabilidades")]
     [Range(0f, 100f)]
     public float chuche1Percent;
     [Range(0f, 100f)]
@@ -46,6 +44,8 @@ public class SCR_Chuches : MonoBehaviour
     {
         camaraPrincipal = Camera.main;
         CalcularLimitesSpawn();
+
+        AjustarDificultadPorVictorias();
 
         frecuenciaActual = frecuenciaInicial;
         siguienteAceleracion = tiempoParaAcelerar;
@@ -149,4 +149,45 @@ public class SCR_Chuches : MonoBehaviour
 
         SCR_FrutasCaida.velocidadGlobal = nuevaVelocidad;
     }
+
+    void AjustarDificultadPorVictorias()
+    {
+        if (SCR_RachaTiempo.instance == null) return;
+
+        int victorias = SCR_RachaTiempo.instance.juegosGanados;
+
+        // Velocidad y frecuencia
+        float multiplicadorVelocidad = 1f + (victorias * 0.15f);
+        float multiplicadorFrecuencia = 1f + (victorias * 0.20f);
+
+        multiplicadorVelocidad = Mathf.Min(multiplicadorVelocidad, 2.5f);
+        multiplicadorFrecuencia = Mathf.Min(multiplicadorFrecuencia, 2f);
+
+        velocidadCaidaInicial *= multiplicadorVelocidad;
+        velocidadCaidaMax *= multiplicadorVelocidad;
+        frecuenciaInicial /= multiplicadorFrecuencia;
+        frecuenciaMinima /= multiplicadorFrecuencia;
+        frecuenciaActual = frecuenciaInicial;
+
+        AjustarProbabilidades(victorias);
+
+    }
+
+    void AjustarProbabilidades(int victorias)
+    {
+        // Aumentar probabilidad de chuches con cada victoria    //Esto es porque al reducir el tiempo no da tiempo a pasar el nivel
+        float aumentoPorVictoria = 5f; // +5% por victoria
+        float aumentoMaximo = 25f; // Máximo +25%
+
+        float aumento = Mathf.Min(victorias * aumentoPorVictoria, aumentoMaximo);
+
+        // reducir fruta (buena)
+        frutaPercent -= aumento;
+
+        // Asegurar que no pase de 100%
+        frutaPercent = Mathf.Min(frutaPercent, 80f); // Máximo 80% de frutas
+
+    }
+
+
 }

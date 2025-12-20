@@ -32,7 +32,7 @@ public class SCR_Explicacion : MonoBehaviour
 
     void Update()
     {
-        // Ejecutar solo una vez en el primer frame (más confiable que Start)
+        // Ejecutar solo una vez en el primer frame 
         if (!yaEjecute)
         {
             yaEjecute = true;
@@ -52,7 +52,7 @@ public class SCR_Explicacion : MonoBehaviour
             return;
         }
 
-        // Verificar si usuario desactivó tutoriales
+        // Verificacion si usuario desactivó tutoriales
         bool tutorialesActivos = PlayerPrefs.GetInt("TutorialesActivos", 1) == 1;
 
         if (!tutorialesActivos)
@@ -85,7 +85,7 @@ public class SCR_Explicacion : MonoBehaviour
 
     private void TextosExplicacionEscena()
     {
-        // IMPORTANTE: Los nombres de las escenas deben coincidir exactamente
+        // ATENCION: Los nombres de las escenas deben coincidir exactamente
         string escena = SceneManager.GetActiveScene().name;
 
         switch (escena)

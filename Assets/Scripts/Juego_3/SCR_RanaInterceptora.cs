@@ -31,16 +31,17 @@ public class SCR_RanaInterceptora : MonoBehaviour
     public int intentosMaximos = 3;
 
     [Header("Detección de Teletransporte")]
-    [Tooltip("Distancia máxima entre frames antes de considerar teletransporte")]
     [Range(1f, 20f)]
     public float distanciaMaximaFrame = 5f;
 
-    private Vector3 ultimaPosicionPersonaje;
+    [Header("Sonidos")]
+    public AudioClip sonidoAcierto;
+    public AudioClip sonidoFallo;
 
     [Header("Estado")]
     [SerializeField] private bool persiguiendoObjetivo = false;
     [SerializeField] private bool esperandoMinijuego = false;
-    [SerializeField] private bool siguiendoPersonaje = false; // ← NUEVO
+    [SerializeField] private bool siguiendoPersonaje = false;
     [SerializeField] private bool ralentizacionActiva = false;
     [SerializeField] private bool enCooldown = false;
     [SerializeField] private int intentosRestantes = 0;
@@ -49,16 +50,11 @@ public class SCR_RanaInterceptora : MonoBehaviour
     private Vector3 posicionInicial;
     private Collider2D personajeObjetivo = null;
     private Transform personajeRobado = null;
-
-
-    [Header("Sonidos")]
-    [Tooltip("Sonido al acertar en la barra")]
-    public AudioClip sonidoAcierto;
-
-    [Tooltip("Sonido al fallar en la barra")]
-    public AudioClip sonidoFallo;
-
+    private Vector3 ultimaPosicionPersonaje;
     private AudioSource audioSource;
+
+    // Para evitar múltiples llamadas
+    private bool minijuegoTerminado = false; // ← NUEVO
 
     void Start()
     {
@@ -85,11 +81,10 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
     void Update()
     {
-        // Si está siguiendo a un personaje robado
         if (siguiendoPersonaje)
         {
             SeguirPersonajeRobado();
-            return; // No hacer nada más
+            return;
         }
 
         if (esperandoMinijuego || enCooldown) return;
@@ -113,23 +108,18 @@ public class SCR_RanaInterceptora : MonoBehaviour
     {
         if (personajeRobado != null)
         {
-            // Calcular distancia movida desde el último frame
             float distanciaMovida = Vector3.Distance(personajeRobado.position, ultimaPosicionPersonaje);
 
-            // Detectar teletransporte
             if (distanciaMovida > distanciaMaximaFrame)
             {
-                // Personaje fue reposicionado = volver a inicio
                 siguiendoPersonaje = false;
                 personajeRobado = null;
                 StartCoroutine(VolverAPosicionInicialSuave());
                 return;
             }
 
-            // Actualizar posición anterior
             ultimaPosicionPersonaje = personajeRobado.position;
 
-            // Seguir suavemente
             transform.position = Vector3.Lerp(
                 transform.position,
                 personajeRobado.position,
@@ -234,8 +224,8 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
         transform.position = posicionInicial;
 
-        // Después de volver, iniciar cooldown
-        StartCoroutine(CooldownCoroutine());
+        // Cooldown
+        yield return StartCoroutine(CooldownCoroutine());
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -246,6 +236,7 @@ public class SCR_RanaInterceptora : MonoBehaviour
         {
             personajeObjetivo = other;
             esperandoMinijuego = true;
+            minijuegoTerminado = false;
             persiguiendoObjetivo = false;
             objetivoActual = null;
             intentosRestantes = intentosMaximos;
@@ -261,8 +252,8 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        // Si está esperando el minijuego y sale del trigger = automáticamente falla
-        if (esperandoMinijuego && other.CompareTag("PersonajeInterceptable"))
+        // Solo ejecutar si está en minijuego Y no ha terminado
+        if (esperandoMinijuego && !minijuegoTerminado && other.CompareTag("PersonajeInterceptable"))
         {
             TerminarMinijuego(false);
         }
@@ -270,7 +261,6 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
     void AlAcertarBarra()
     {
-
         if (sonidoAcierto != null && audioSource != null)
         {
             audioSource.PlayOneShot(sonidoAcierto);
@@ -280,10 +270,9 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
         if (personajeObjetivo != null)
         {
-            personajeObjetivo.enabled = false; // Ahora esto no activará OnTriggerExit como fallo
+            personajeObjetivo.enabled = false;
             personajeRobado = personajeObjetivo.transform;
 
-            // Activar sprite hijo
             ActivarSpriteRobado(personajeRobado.gameObject, true);
 
             ultimaPosicionPersonaje = personajeRobado.position;
@@ -295,10 +284,8 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
     void ActivarSpriteRobado(GameObject personaje, bool activar)
     {
-        // Buscar hijo por nombre (puedes ajustar el nombre)
         Transform hijo = personaje.transform.Find("SpriteRobado");
 
-        // Si no lo encuentra por nombre, buscar el primer hijo
         if (hijo == null && personaje.transform.childCount > 0)
         {
             hijo = personaje.transform.GetChild(0);
@@ -327,26 +314,26 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
     void TerminarMinijuego(bool exito)
     {
-        // Desactivar barra
+        // Evitar ejecutar múltiples veces
+        if (minijuegoTerminado) return;
+        minijuegoTerminado = true; 
+
         if (barraRitmo != null)
         {
             barraRitmo.SetActive(false);
         }
 
-        // Terminar ralentización
         if (scrollLateral != null)
         {
             scrollLateral.factorRalentizacion = 1f;
         }
 
-        // Manejar personaje
         if (personajeObjetivo != null)
         {
             personajeObjetivo.enabled = false;
 
             if (!exito)
             {
-                // Hacer semi-transparente si falló
                 SpriteRenderer sr = personajeObjetivo.GetComponent<SpriteRenderer>();
                 if (sr != null)
                 {
@@ -363,10 +350,8 @@ public class SCR_RanaInterceptora : MonoBehaviour
 
         if (!exito)
         {
-            // FALLO: Volver suavemente
             StartCoroutine(VolverAPosicionInicialSuave());
         }
-        // Si ACERTÓ, siguiendoPersonaje ya está en true
     }
 
     void IniciarRalentizacion()
@@ -408,7 +393,6 @@ public class SCR_RanaInterceptora : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, 0.8f);
         }
 
-        // Indicador de siguiendo personaje
         if (Application.isPlaying && siguiendoPersonaje)
         {
             Gizmos.color = Color.green;

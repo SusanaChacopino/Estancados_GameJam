@@ -52,6 +52,7 @@ public class SCR_BarraRitmo : MonoBehaviour
         CalcularLimites();
         InicializarIndicador();
         GenerarPosicionObjetivo();
+        AjustarDificultadPorVictorias();
 
         // Guardar color original
         if (puntoObjetivo != null)
@@ -62,6 +63,7 @@ public class SCR_BarraRitmo : MonoBehaviour
                 colorOriginalObjetivo = sr.color;
             }
         }
+
     }
 
     void OnEnable()
@@ -265,5 +267,20 @@ public class SCR_BarraRitmo : MonoBehaviour
     public void DetenerBarra()
     {
         juegoActivo = false;
+    }
+
+    void AjustarDificultadPorVictorias()
+    {
+        if (SCR_RachaTiempo.instance == null) return;
+
+        int victorias = SCR_RachaTiempo.instance.juegosGanados;
+
+        // Cada victoria aumenta velocidad del indicador
+        float multiplicador = 1f + (victorias * 0.2f); // +20% por victoria
+        multiplicador = Mathf.Min(multiplicador, 2.5f); // Máximo 2.5x
+
+        velocidadIndicador *= multiplicador;
+
+        Debug.Log($"[Nivel3-Barra] Dificultad ajustada. Victorias: {victorias}, VelIndicador: {velocidadIndicador:F2}");
     }
 }

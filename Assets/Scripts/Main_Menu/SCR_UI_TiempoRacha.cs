@@ -6,7 +6,6 @@ public class SCR_UI_TiempoRacha : MonoBehaviour
     public TextMeshProUGUI textoPuntos;
     public TextMeshProUGUI textoTiempo;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         if (SCR_RachaTiempo.instance != null)
@@ -16,7 +15,7 @@ public class SCR_UI_TiempoRacha : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         

@@ -9,7 +9,6 @@ public class SCR_RachaTiempo : MonoBehaviour
 
     void Awake()
     {
-        // Si ya existe una instancia, destruir este duplicado
         if (instance == null)
         {
             instance = this;

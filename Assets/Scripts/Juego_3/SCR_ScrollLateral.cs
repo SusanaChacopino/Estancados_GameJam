@@ -36,6 +36,8 @@ public class SCR_ScrollLateral : MonoBehaviour
     void Start()
     {
         mainCamera = Camera.main;
+
+        AjustarDificultadPorVictorias();
     }
 
     void Update()
@@ -97,7 +99,7 @@ public class SCR_ScrollLateral : MonoBehaviour
                 nuevaPos.x = maxX + capa.anchoPieza;
                 pieza.position = nuevaPos;
 
-                // NUEVO: Resetear personaje al reposicionar
+                //Resetear personaje al reposicionar
                 ResetearPersonaje(pieza.gameObject);
             }
         }
@@ -124,11 +126,9 @@ public class SCR_ScrollLateral : MonoBehaviour
                 sr.color = color;
             }
 
-            // NUEVO: Desactivar sprite hijo (el que indica que está robado)
+            //Desactivar nube de golpes
             DesactivarSpriteRobado(objeto);
         }
-
-        // Verificar hijos también
         foreach (Transform hijo in objeto.transform)
         {
             ResetearPersonaje(hijo.gameObject);
@@ -175,5 +175,20 @@ public class SCR_ScrollLateral : MonoBehaviour
     public float ObtenerVelocidadActual()
     {
         return velocidadActual;
+    }
+
+    void AjustarDificultadPorVictorias()
+    {
+        if (SCR_RachaTiempo.instance == null) return;
+
+        int victorias = SCR_RachaTiempo.instance.juegosGanados;
+
+        // Cada victoria aumenta velocidad
+        float multiplicador = 1f + (victorias * 0.15f); // +15% por victoria
+        multiplicador = Mathf.Min(multiplicador, 2.2f); // Máximo 2.2x
+
+        velocidadBase *= multiplicador;
+
+        Debug.Log($"[Nivel3-Scroll] Dificultad ajustada. Victorias: {victorias}, VelBase: {velocidadBase:F2}");
     }
 }

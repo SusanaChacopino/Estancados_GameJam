@@ -260,4 +260,4 @@ MonoBehaviour:
   lenguaRect: {fileID: 9049409195332411720}
   tiempoTotal: 100
   sistemaPuntos: {fileID: 0}
-  menuController: {fileID: 0}
+  menuController: {fileID: 3607225269902942006, guid: e1de788589b5d0043aca4b54c00456b0, type: 3}

@@ -5,18 +5,27 @@ public class Timer : MonoBehaviour
 {
     [Header("Configuración")]
     public RectTransform lenguaRect;
-    public float tiempoTotal = 100f; // Tiempo inicial del temporizador
+    public float tiempoTotal = 100f;
 
     private float anchoInicial;
     private float tiempoRestante;
     private bool tiempoTerminado = false;
 
+    [Header("Referencias")]
     public SCR_ColisionesPuntos sistemaPuntos;
     public SCR_MenuController menuController;
 
     void Start()
     {
-        // Reducir tiempo según rachas ganadas (cada 3 juegos ganados = mitad del tiempo)
+        // Verificar que lenguaRect existe
+        if (lenguaRect == null)
+        {
+            //Debug.LogError("[Timer] lenguaRect no está asignado en el Inspector");
+            enabled = false; // Desactivar el script
+            return;
+        }
+
+        // Reducir tiempo según rachas ganadas
         if (SCR_RachaTiempo.instance != null)
         {
             int juegos = SCR_RachaTiempo.instance.juegosGanados;
@@ -30,6 +39,12 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
+        if (lenguaRect == null)
+        {
+            enabled = false; // Desactiva script si se destruye
+            return;
+        }
+
         if (tiempoTerminado) return;
 
         if (tiempoRestante > 0)
@@ -46,7 +61,15 @@ public class Timer : MonoBehaviour
             // Tiempo agotado
             tiempoTerminado = true;
             lenguaRect.sizeDelta = new Vector2(0, lenguaRect.sizeDelta.y);
-            menuController.LoadScene(4);
+
+            if (menuController != null)
+            {
+                menuController.LoadScene(4);
+            }
+            else
+            {
+                //Debug.LogError("[Timer] menuController no está asignado");
+            }
         }
     }
 }
